@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.border.LineBorder;
+import javax.swing.table.TableColumn;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -52,6 +53,7 @@ public class Dashboard extends javax.swing.JFrame {
         buttonsEditSetIcon();
         buttonsDeleteSetIcon();
         tableHeaderSetColor();
+
     }
 
     private javax.swing.table.DefaultTableModel tableModelStudios = getDefaultTableModel(1);
@@ -63,7 +65,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.table.DefaultTableModel getDefaultTableModel(int i) {
         switch (i) {
             case 1:
-                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Studio Name", "Director", "Studio Country"}) {
+                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Studio ID", "Studio Name", "Director", "Studio Country"}) {
                     boolean[] canEdit = new boolean[]{
                         false, false, false
                     };
@@ -73,9 +75,9 @@ public class Dashboard extends javax.swing.JFrame {
                     }
                 };
             case 2:
-                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Publisher Name", "Publisher Country"}) {
+                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Publisher ID", "Publisher Name", "Publisher Country"}) {
                     boolean[] canEdit = new boolean[]{
-                        false, false
+                        false, false, false
                     };
 
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -83,9 +85,9 @@ public class Dashboard extends javax.swing.JFrame {
                     }
                 };
             case 3:
-                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Game Title", "Genre", "Studio", "Publisher", "Release Date", "Price"}) {
+                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"GameID", "Game Title", "Genre", "Studio", "Publisher", "Release Date", "Price"}) {
                     boolean[] canEdit = new boolean[]{
-                        false, false, false, false, false, false
+                        false, false, false, false, false, false, false
                     };
 
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -93,9 +95,9 @@ public class Dashboard extends javax.swing.JFrame {
                     }
                 };
             case 4:
-                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Name", "Email", "Gender"}) {
+                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"UserID", "Name", "Email", "Gender"}) {
                     boolean[] canEdit = new boolean[]{
-                        false, false, false
+                        false, false, false, false
                     };
 
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -103,9 +105,9 @@ public class Dashboard extends javax.swing.JFrame {
                     }
                 };
             case 5:
-                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"User Name", "Game", "Transaction Date"}) {
+                return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"TransactionID", "User Name", "Game Title", "Transaction Date"}) {
                     boolean[] canEdit = new boolean[]{
-                        false, false, false
+                        false, false, false, false
                     };
 
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -125,37 +127,44 @@ public class Dashboard extends javax.swing.JFrame {
             Statement stt = conn.createStatement();
             String SQL = "";
             ResultSet res;
+            TableColumn colToDelete;
             switch (n) {
                 case 1:
-                    data = new String[3];
-                    SQL += "SELECT studio_name, director, studio_country FROM studios";
+                    data = new String[4];
+                    SQL += "SELECT * FROM studios";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
                         data[2] = res.getString(3);
+                        data[3] = res.getString(4);
                         tableModelStudios.addRow(data);
                     }
+                    colToDelete = tableStudios.getColumnModel().getColumn(0);
+                    tableStudios.removeColumn(colToDelete);
                     res.close();
                     stt.close();
                     conn.close();
                     break;
                 case 2:
                     data = new String[3];
-                    SQL += "SELECT publisher_name, publisher_country FROM publishers";
+                    SQL += "SELECT * FROM publishers";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
+                        data[2] = res.getString(3);
                         tableModelPublishers.addRow(data);
                     }
+                    colToDelete = tablePublishers.getColumnModel().getColumn(0);
+                    tablePublishers.removeColumn(colToDelete);
                     res.close();
                     stt.close();
                     conn.close();
                     break;
                 case 3:
                     data = new String[7];
-                    SQL += "SELECT game_title, genre, studio_name, publisher_name, release_date, price FROM games LEFT JOIN studios ON games.studioID = studios.studioID LEFT JOIN publishers ON games.publisherID = publishers.publisherID";
+                    SQL += "SELECT gameID, game_title, genre, studio_name, publisher_name, release_date, price FROM games LEFT JOIN studios ON games.studioID = studios.studioID LEFT JOIN publishers ON games.publisherID = publishers.publisherID";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
@@ -164,36 +173,45 @@ public class Dashboard extends javax.swing.JFrame {
                         data[3] = res.getString(4);
                         data[4] = res.getString(5);
                         data[5] = res.getString(6);
+                        data[6] = res.getString(7);
                         tableModelGames.addRow(data);
                     }
+                    colToDelete = tableGames.getColumnModel().getColumn(0);
+                    tableGames.removeColumn(colToDelete);
                     res.close();
                     stt.close();
                     conn.close();
                     break;
                 case 4:
                     data = new String[4];
-                    SQL += "SELECT name, email, gender FROM users";
+                    SQL += "SELECT * FROM users";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
                         data[2] = res.getString(3);
+                        data[3] = res.getString(4);
                         tableModelUsers.addRow(data);
                     }
+                    colToDelete = tableUsers.getColumnModel().getColumn(0);
+                    tableUsers.removeColumn(colToDelete);
                     res.close();
                     stt.close();
                     conn.close();
                     break;
                 case 5:
                     data = new String[4];
-                    SQL += "SELECT name, game_title, transaction_date FROM transactions LEFT JOIN users ON transactions.userID = users.UserID LEFT JOIN games ON transactions.gameID = games.gameID";
+                    SQL += "SELECT transactionID, name, game_title, transaction_date FROM transactions LEFT JOIN users ON transactions.userID = users.UserID LEFT JOIN games ON transactions.gameID = games.gameID";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
                         data[2] = res.getString(3);
+                        data[3] = res.getString(4);
                         tableModelTransactions.addRow(data);
                     }
+                    colToDelete = tableTransactions.getColumnModel().getColumn(0);
+                    tableTransactions.removeColumn(colToDelete);
                     res.close();
                     stt.close();
                     conn.close();
@@ -209,7 +227,6 @@ public class Dashboard extends javax.swing.JFrame {
     private void setTableSearch(int n) {
         try {
             String data[];
-            String stat = "";
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(database, user, pass);
             Statement stt = conn.createStatement();
@@ -218,13 +235,14 @@ public class Dashboard extends javax.swing.JFrame {
             switch (n) {
                 case 1:
                     tableModelStudios.setRowCount(0);
-                    data = new String[3];
-                    SQL += "SELECT studio_name, director, studio_country FROM studios WHERE studio_name LIKE '%" + textSearchStudios.getText() + "%' OR director LIKE '%" + textSearchStudios.getText() + "%' OR studio_country LIKE '%" + textSearchStudios.getText() + "%'";
+                    data = new String[4];
+                    SQL += "SELECT * FROM studios WHERE studio_name LIKE '%" + textSearchStudios.getText() + "%' OR director LIKE '%" + textSearchStudios.getText() + "%' OR studio_country LIKE '%" + textSearchStudios.getText() + "%'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
                         data[2] = res.getString(3);
+                        data[3] = res.getString(4);
                         tableModelStudios.addRow(data);
                     }
                     res.close();
@@ -233,12 +251,13 @@ public class Dashboard extends javax.swing.JFrame {
                     break;
                 case 2:
                     tableModelPublishers.setRowCount(0);
-                    data = new String[2];
-                    SQL += "SELECT publisher_name, publisher_country FROM publishers WHERE publisher_name LIKE '%" + textSearchPublishers.getText() + "%' OR publisher_country LIKE '%" + textSearchPublishers.getText() + "%'";
+                    data = new String[3];
+                    SQL += "SELECT * FROM publishers WHERE publisher_name LIKE '%" + textSearchPublishers.getText() + "%' OR publisher_country LIKE '%" + textSearchPublishers.getText() + "%'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
+                        data[2] = res.getString(3);
                         tableModelPublishers.addRow(data);
                     }
                     res.close();
@@ -247,8 +266,8 @@ public class Dashboard extends javax.swing.JFrame {
                     break;
                 case 3:
                     tableModelGames.setRowCount(0);
-                    data = new String[6];
-                    SQL += "SELECT game_title, genre, studio_name, publisher_name, release_date, price FROM games LEFT JOIN studios ON games.studioID = studios.studioID LEFT JOIN publishers ON games.publisherID = publishers.publisherID WHERE game_title LIKE '%" + textSearchGames.getText() + "%' OR genre LIKE '%" + textSearchGames.getText() + "%' OR studio_name LIKE '%" + textSearchGames.getText() + "%' OR publisher_name LIKE '%" + textSearchGames.getText() + "%' OR release_date LIKE '%" + textSearchGames.getText() + "%' OR price LIKE '%" + textSearchGames.getText() + "%'";
+                    data = new String[7];
+                    SQL += "SELECT gameID, game_title, genre, studio_name, publisher_name, release_date, price FROM games LEFT JOIN studios ON games.studioID = studios.studioID LEFT JOIN publishers ON games.publisherID = publishers.publisherID WHERE game_title LIKE '%" + textSearchGames.getText() + "%' OR genre LIKE '%" + textSearchGames.getText() + "%' OR studio_name LIKE '%" + textSearchGames.getText() + "%' OR publisher_name LIKE '%" + textSearchGames.getText() + "%' OR release_date LIKE '%" + textSearchGames.getText() + "%' OR price LIKE '%" + textSearchGames.getText() + "%'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
@@ -257,6 +276,7 @@ public class Dashboard extends javax.swing.JFrame {
                         data[3] = res.getString(4);
                         data[4] = res.getString(5);
                         data[5] = res.getString(6);
+                        data[6] = res.getString(7);
                         tableModelGames.addRow(data);
                     }
                     res.close();
@@ -265,13 +285,14 @@ public class Dashboard extends javax.swing.JFrame {
                     break;
                 case 4:
                     tableModelUsers.setRowCount(0);
-                    data = new String[3];
-                    SQL += "SELECT name, email, gender FROM users WHERE name LIKE '%" + textSearchUsers.getText() + "%' OR email LIKE '%" + textSearchUsers.getText() + "%' OR gender LIKE '%" + textSearchUsers.getText() + "%'";
+                    data = new String[4];
+                    SQL += "SELECT * FROM users WHERE name LIKE '%" + textSearchUsers.getText() + "%' OR email LIKE '%" + textSearchUsers.getText() + "%' OR gender LIKE '%" + textSearchUsers.getText() + "%'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
                         data[2] = res.getString(3);
+                        data[3] = res.getString(4);
                         tableModelUsers.addRow(data);
                     }
                     res.close();
@@ -280,13 +301,14 @@ public class Dashboard extends javax.swing.JFrame {
                     break;
                 case 5:
                     tableModelTransactions.setRowCount(0);
-                    data = new String[3];
-                    SQL += "SELECT name, game_title, transaction_date FROM transactions LEFT JOIN users ON transactions.userID = users.UserID LEFT JOIN games ON transactions.gameID = games.gameID WHERE name LIKE '%" + textSearchTransactions.getText() + "%' OR game_title LIKE '%" + textSearchTransactions.getText() + "%' OR transaction_date LIKE '%" + textSearchTransactions.getText() + "%'";
+                    data = new String[4];
+                    SQL += "SELECT transactionsID, name, game_title, transaction_date FROM transactions LEFT JOIN users ON transactions.userID = users.UserID LEFT JOIN games ON transactions.gameID = games.gameID WHERE name LIKE '%" + textSearchTransactions.getText() + "%' OR game_title LIKE '%" + textSearchTransactions.getText() + "%' OR transaction_date LIKE '%" + textSearchTransactions.getText() + "%'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
                         data[1] = res.getString(2);
                         data[2] = res.getString(3);
+                        data[3] = res.getString(4);
                         tableModelTransactions.addRow(data);
                     }
                     res.close();
@@ -517,9 +539,11 @@ public class Dashboard extends javax.swing.JFrame {
             SQL += "SELECT studioID, studio_name FROM studios ORDER BY studio_name";
             res = stt.executeQuery(SQL);
             comboBoxStudio.removeAllItems();
+            comboBoxEditStudio.removeAllItems();
             while (res.next()) {
                 StudioItem si;
                 comboBoxStudio.addItem(si = new StudioItem(res.getInt(1), res.getString(2)));
+                comboBoxEditStudio.addItem(si = new StudioItem(res.getInt(1), res.getString(2)));
             }
             res.close();
             stt.close();
@@ -558,9 +582,11 @@ public class Dashboard extends javax.swing.JFrame {
             SQL += "SELECT publisherID, publisher_name FROM publishers ORDER by publisher_name";
             res = stt.executeQuery(SQL);
             comboBoxPublisher.removeAllItems();
+            comboBoxEditPublisher.removeAllItems();
             while (res.next()) {
                 PublisherItem pi;
                 comboBoxPublisher.addItem(pi = new PublisherItem(res.getInt(1), res.getString(2)));
+                comboBoxEditPublisher.addItem(pi = new PublisherItem(res.getInt(1), res.getString(2)));
             }
             res.close();
             stt.close();
@@ -569,6 +595,119 @@ public class Dashboard extends javax.swing.JFrame {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
+        }
+    }
+
+    public void deleteRow(int n) {
+        try {
+            int row;
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(database, user, pass);
+            Statement stt = conn.createStatement();
+            String SQL = "";
+            switch (n) {
+                case 1:
+                    row = tableStudios.getSelectedRow();
+                    SQL += "DELETE FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelStudios.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 2:
+                    row = tablePublishers.getSelectedRow();
+                    SQL += "DELETE FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelPublishers.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 3:
+                    row = tableGames.getSelectedRow();
+                    SQL += "DELETE FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelGames.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 4:
+                    row = tableUsers.getSelectedRow();
+                    SQL += "DELETE FROM users WHERE userID='" + tableModelUsers.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelUsers.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 5:
+                    row = tableTransactions.getSelectedRow();
+                    SQL += "DELETE FROM transactions WHERE transactionID='" + tableModelTransactions.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelTransactions.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void rowToInput(int n) {
+        try {
+            int row;
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(database, user, pass);
+            Statement stt = conn.createStatement();
+            ResultSet res;
+            String SQL = "";
+            switch (n) {
+                case 1:
+                    row = tableStudios.getSelectedRow();
+                    SQL += "SELECT * FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
+                    res = stt.executeQuery(SQL);
+                    while (res.next()) {
+                        textEditStudioID.setText(res.getString(1));
+                        textEditStudioName.setText(res.getString(2));
+                        textEditDirector.setText(res.getString(3));
+                        textEditStudioCountry.setText(res.getString(4));
+                    }
+                    textEditStudioID.setVisible(false);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 2:
+                    row = tablePublishers.getSelectedRow();
+                    SQL += "SELECT * FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
+                    res = stt.executeQuery(SQL);
+                    while (res.next()) {
+                        textEditPublisherID.setText(res.getString(1));
+                        textEditPublisherName.setText(res.getString(2));
+                        textEditPublisherCountry.setText(res.getString(3));
+                    }
+                    textEditPublisherID.setVisible(false);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 3:
+                    row = tableGames.getSelectedRow();
+                    SQL += "SELECT * FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
+                    res = stt.executeQuery(SQL);
+                    while (res.next()) {
+                        textEditGameID.setText(res.getString(1));
+                        comboBoxEditStudio.setSelectedItem(res.getString(2));
+                        comboBoxEditPublisher.setSelectedItem(res.getString(3));
+                        textEditGameTitle.setText(res.getString(4));
+                        textEditGenre.setText(res.getString(5));
+                        textEditReleaseDate.setText(res.getString(6));
+                        textEditPrice.setText(res.getString(7));
+                    }
+                    textEditGameID.setVisible(false);
+                    stt.close();
+                    conn.close();
+                    break;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -664,7 +803,9 @@ public class Dashboard extends javax.swing.JFrame {
         labelGameTitle = new javax.swing.JLabel();
         textGameTitle = new TextFieldRound();
         labelStudio = new javax.swing.JLabel();
+        comboBoxStudio = new ComboBoxRound();
         labelPublisher = new javax.swing.JLabel();
+        comboBoxPublisher = new ComboBoxRound();
         labelGenre = new javax.swing.JLabel();
         textGenre = new TextFieldRound();
         labelReleaseDate = new javax.swing.JLabel();
@@ -672,10 +813,49 @@ public class Dashboard extends javax.swing.JFrame {
         buttonReleaseDate = new ButtonRound();
         labelPrice = new javax.swing.JLabel();
         textPrice = new TextFieldRound();
-        comboBoxStudio = new ComboBoxRound();
-        comboBoxPublisher = new ComboBoxRound();
         buttonSubmitCreateGames = new ButtonRound();
         buttonResetCreateGames = new ButtonRound();
+        EditStudios = new javax.swing.JPanel();
+        labelEditStudios = new javax.swing.JLabel();
+        panelEditStudios = new PanelRound();
+        labelEditStudioName = new javax.swing.JLabel();
+        textEditStudioName = new TextFieldRound();
+        labelEditDirector = new javax.swing.JLabel();
+        textEditDirector = new TextFieldRound();
+        labelEditStudioCountry = new javax.swing.JLabel();
+        textEditStudioCountry = new TextFieldRound();
+        buttonUpdateEditStudios = new ButtonRound();
+        buttonResetEdiStudios = new ButtonRound();
+        textEditStudioID = new TextFieldRound();
+        EditPublishers = new javax.swing.JPanel();
+        labelEditPublishers = new javax.swing.JLabel();
+        panelEditPublishers = new PanelRound();
+        labelEditPublisherName = new javax.swing.JLabel();
+        textEditPublisherName = new TextFieldRound();
+        labelEditPublisherCountry = new javax.swing.JLabel();
+        textEditPublisherCountry = new TextFieldRound();
+        buttonUpdateEditPublishers = new ButtonRound();
+        buttonResetEditPublishers = new ButtonRound();
+        textEditPublisherID = new TextFieldRound();
+        EditGames = new javax.swing.JPanel();
+        labelEditGames = new javax.swing.JLabel();
+        panelEditGames = new PanelRound();
+        labelEditGameTitle = new javax.swing.JLabel();
+        textEditGameTitle = new TextFieldRound();
+        labelEditStudio = new javax.swing.JLabel();
+        comboBoxEditStudio = new ComboBoxRound();
+        labelEditPublisher = new javax.swing.JLabel();
+        comboBoxEditPublisher = new ComboBoxRound();
+        labelEditGenre = new javax.swing.JLabel();
+        textEditGenre = new TextFieldRound();
+        labelEditReleaseDate = new javax.swing.JLabel();
+        textEditReleaseDate = new TextFieldRound();
+        buttonEditReleaseDate = new ButtonRound();
+        labelEditPrice = new javax.swing.JLabel();
+        textEditPrice = new TextFieldRound();
+        buttonUpdateEditGames = new ButtonRound();
+        buttonResetEditGames = new ButtonRound();
+        textEditGameID = new TextFieldRound();
 
         labelHeader.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         labelHeader.setForeground(new java.awt.Color(255, 255, 255));
@@ -892,12 +1072,22 @@ public class Dashboard extends javax.swing.JFrame {
         buttonEditStudios.setColorClick(new java.awt.Color(0, 76, 193));
         buttonEditStudios.setColorOver(new java.awt.Color(40, 136, 253));
         buttonEditStudios.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonEditStudios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonEditStudiosMouseClicked(evt);
+            }
+        });
 
         buttonDeleteStudios.setBorderColor(new java.awt.Color(173, 0, 26));
         buttonDeleteStudios.setColor(new java.awt.Color(173, 0, 26));
         buttonDeleteStudios.setColorClick(new java.awt.Color(153, 0, 6));
         buttonDeleteStudios.setColorOver(new java.awt.Color(213, 40, 66));
         buttonDeleteStudios.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonDeleteStudios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonDeleteStudiosMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout StudiosLayout = new javax.swing.GroupLayout(Studios);
         Studios.setLayout(StudiosLayout);
@@ -937,7 +1127,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(StudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonDeleteStudios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonEditStudios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab1", Studios);
@@ -1008,12 +1198,22 @@ public class Dashboard extends javax.swing.JFrame {
         buttonEditPublishers.setColorClick(new java.awt.Color(0, 76, 193));
         buttonEditPublishers.setColorOver(new java.awt.Color(40, 136, 253));
         buttonEditPublishers.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonEditPublishers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonEditPublishersMouseClicked(evt);
+            }
+        });
 
         buttonDeletePublishers.setBorderColor(new java.awt.Color(173, 0, 26));
         buttonDeletePublishers.setColor(new java.awt.Color(173, 0, 26));
         buttonDeletePublishers.setColorClick(new java.awt.Color(153, 0, 6));
         buttonDeletePublishers.setColorOver(new java.awt.Color(213, 40, 66));
         buttonDeletePublishers.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonDeletePublishers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonDeletePublishersMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout PublishersLayout = new javax.swing.GroupLayout(Publishers);
         Publishers.setLayout(PublishersLayout);
@@ -1054,7 +1254,7 @@ public class Dashboard extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(buttonDeletePublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(buttonEditPublishers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab2", Publishers);
@@ -1125,12 +1325,22 @@ public class Dashboard extends javax.swing.JFrame {
         buttonEditGames.setColorClick(new java.awt.Color(0, 76, 193));
         buttonEditGames.setColorOver(new java.awt.Color(40, 136, 253));
         buttonEditGames.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonEditGames.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonEditGamesMouseClicked(evt);
+            }
+        });
 
         buttonDeleteGames.setBorderColor(new java.awt.Color(173, 0, 26));
         buttonDeleteGames.setColor(new java.awt.Color(173, 0, 26));
         buttonDeleteGames.setColorClick(new java.awt.Color(153, 0, 6));
         buttonDeleteGames.setColorOver(new java.awt.Color(213, 40, 66));
         buttonDeleteGames.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonDeleteGames.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonDeleteGamesMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout GamesLayout = new javax.swing.GroupLayout(Games);
         Games.setLayout(GamesLayout);
@@ -1170,7 +1380,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(GamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonDeleteGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab3", Games);
@@ -1230,6 +1440,11 @@ public class Dashboard extends javax.swing.JFrame {
         buttonDeleteUsers.setColorClick(new java.awt.Color(153, 0, 6));
         buttonDeleteUsers.setColorOver(new java.awt.Color(213, 40, 66));
         buttonDeleteUsers.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonDeleteUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonDeleteUsersMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout UsersLayout = new javax.swing.GroupLayout(Users);
         Users.setLayout(UsersLayout);
@@ -1265,7 +1480,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(scrollPaneUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(buttonDeleteUsers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab4", Users);
@@ -1327,6 +1542,11 @@ public class Dashboard extends javax.swing.JFrame {
         buttonDeleteTransactions.setColorClick(new java.awt.Color(153, 0, 6));
         buttonDeleteTransactions.setColorOver(new java.awt.Color(213, 40, 66));
         buttonDeleteTransactions.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonDeleteTransactions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonDeleteTransactionsMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout TransactionsLayout = new javax.swing.GroupLayout(Transactions);
         Transactions.setLayout(TransactionsLayout);
@@ -1360,7 +1580,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addComponent(scrollPaneTransactions, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(buttonDeleteTransactions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab5", Transactions);
@@ -1426,7 +1646,6 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(20, 20, 20))
         );
 
-        buttonSubmitCreateStudios.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonSubmitCreateStudios.setText("SUBMIT");
         buttonSubmitCreateStudios.setBorderColor(new java.awt.Color(111, 166, 32));
         buttonSubmitCreateStudios.setColorClick(new java.awt.Color(91, 146, 12));
@@ -1439,7 +1658,6 @@ public class Dashboard extends javax.swing.JFrame {
         });
 
         buttonResetCreateStudios.setBackground(new java.awt.Color(39, 59, 75));
-        buttonResetCreateStudios.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonResetCreateStudios.setForeground(new java.awt.Color(103, 193, 245));
         buttonResetCreateStudios.setText("RESET");
         buttonResetCreateStudios.setBorderColor(new java.awt.Color(39, 59, 75));
@@ -1531,7 +1749,6 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(20, 20, 20))
         );
 
-        buttonSubmitCreatePublishers.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonSubmitCreatePublishers.setText("SUBMIT");
         buttonSubmitCreatePublishers.setBorderColor(new java.awt.Color(111, 166, 32));
         buttonSubmitCreatePublishers.setColorClick(new java.awt.Color(91, 146, 12));
@@ -1544,7 +1761,6 @@ public class Dashboard extends javax.swing.JFrame {
         });
 
         buttonResetCreatePublishers.setBackground(new java.awt.Color(39, 59, 75));
-        buttonResetCreatePublishers.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonResetCreatePublishers.setForeground(new java.awt.Color(103, 193, 245));
         buttonResetCreatePublishers.setText("RESET");
         buttonResetCreatePublishers.setBorderColor(new java.awt.Color(39, 59, 75));
@@ -1605,9 +1821,13 @@ public class Dashboard extends javax.swing.JFrame {
         labelStudio.setForeground(new java.awt.Color(4, 175, 244));
         labelStudio.setText("Studio");
 
+        comboBoxStudio.setPreferredSize(new java.awt.Dimension(300, 30));
+
         labelPublisher.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelPublisher.setForeground(new java.awt.Color(4, 175, 244));
         labelPublisher.setText("Publisher");
+
+        comboBoxPublisher.setPreferredSize(new java.awt.Dimension(300, 30));
 
         labelGenre.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelGenre.setForeground(new java.awt.Color(4, 175, 244));
@@ -1622,7 +1842,6 @@ public class Dashboard extends javax.swing.JFrame {
         textReleaseDate.setPreferredSize(new java.awt.Dimension(300, 30));
 
         buttonReleaseDate.setBackground(new java.awt.Color(103, 193, 245));
-        buttonReleaseDate.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonReleaseDate.setText("...");
         buttonReleaseDate.setAlignmentY(0.0F);
         buttonReleaseDate.setBorderColor(new java.awt.Color(103, 193, 245));
@@ -1641,10 +1860,6 @@ public class Dashboard extends javax.swing.JFrame {
         labelPrice.setText("Price");
 
         textPrice.setPreferredSize(new java.awt.Dimension(300, 30));
-
-        comboBoxStudio.setPreferredSize(new java.awt.Dimension(300, 30));
-
-        comboBoxPublisher.setPreferredSize(new java.awt.Dimension(300, 30));
 
         javax.swing.GroupLayout panelCreateGamesLayout = new javax.swing.GroupLayout(panelCreateGames);
         panelCreateGames.setLayout(panelCreateGamesLayout);
@@ -1711,7 +1926,6 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap(31, Short.MAX_VALUE))
         );
 
-        buttonSubmitCreateGames.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonSubmitCreateGames.setText("SUBMIT");
         buttonSubmitCreateGames.setBorderColor(new java.awt.Color(111, 166, 32));
         buttonSubmitCreateGames.setColorClick(new java.awt.Color(91, 146, 12));
@@ -1724,7 +1938,6 @@ public class Dashboard extends javax.swing.JFrame {
         });
 
         buttonResetCreateGames.setBackground(new java.awt.Color(39, 59, 75));
-        buttonResetCreateGames.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonResetCreateGames.setForeground(new java.awt.Color(103, 193, 245));
         buttonResetCreateGames.setText("RESET");
         buttonResetCreateGames.setBorderColor(new java.awt.Color(39, 59, 75));
@@ -1768,6 +1981,392 @@ public class Dashboard extends javax.swing.JFrame {
         );
 
         tabbedPane.addTab("tab8", CreateGames);
+
+        EditStudios.setBackground(new java.awt.Color(22, 25, 32));
+        EditStudios.setPreferredSize(new java.awt.Dimension(1280, 642));
+
+        labelEditStudios.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        labelEditStudios.setForeground(new java.awt.Color(255, 255, 255));
+        labelEditStudios.setText("EDIT STUDIO");
+
+        labelEditStudioName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditStudioName.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditStudioName.setText("Studio Name");
+
+        textEditStudioName.setCaretColor(new java.awt.Color(4, 175, 244));
+        textEditStudioName.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        labelEditDirector.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditDirector.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditDirector.setText("Director");
+
+        textEditDirector.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        labelEditStudioCountry.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditStudioCountry.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditStudioCountry.setText("Studio Country");
+
+        textEditStudioCountry.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        javax.swing.GroupLayout panelEditStudiosLayout = new javax.swing.GroupLayout(panelEditStudios);
+        panelEditStudios.setLayout(panelEditStudiosLayout);
+        panelEditStudiosLayout.setHorizontalGroup(
+            panelEditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEditStudiosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textEditStudioName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEditStudioName))
+                .addGap(82, 82, 82)
+                .addGroup(panelEditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelEditDirector)
+                    .addComponent(textEditDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(82, 82, 82)
+                .addGroup(panelEditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelEditStudioCountry)
+                    .addComponent(textEditStudioCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelEditStudiosLayout.setVerticalGroup(
+            panelEditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEditStudiosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelEditStudioName)
+                    .addComponent(labelEditStudioCountry)
+                    .addComponent(labelEditDirector))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelEditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textEditStudioName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textEditStudioCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textEditDirector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
+        );
+
+        buttonUpdateEditStudios.setBackground(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditStudios.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        buttonUpdateEditStudios.setText("UPDATE");
+        buttonUpdateEditStudios.setBorderColor(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditStudios.setColor(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditStudios.setColorClick(new java.awt.Color(0, 76, 193));
+        buttonUpdateEditStudios.setColorOver(new java.awt.Color(40, 136, 253));
+        buttonUpdateEditStudios.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        buttonResetEdiStudios.setBackground(new java.awt.Color(39, 59, 75));
+        buttonResetEdiStudios.setForeground(new java.awt.Color(103, 193, 245));
+        buttonResetEdiStudios.setText("RESET");
+        buttonResetEdiStudios.setBorderColor(new java.awt.Color(39, 59, 75));
+        buttonResetEdiStudios.setColor(new java.awt.Color(39, 59, 75));
+        buttonResetEdiStudios.setColorClick(new java.awt.Color(19, 39, 55));
+        buttonResetEdiStudios.setColorOver(new java.awt.Color(79, 99, 115));
+        buttonResetEdiStudios.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        textEditStudioID.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        javax.swing.GroupLayout EditStudiosLayout = new javax.swing.GroupLayout(EditStudios);
+        EditStudios.setLayout(EditStudiosLayout);
+        EditStudiosLayout.setHorizontalGroup(
+            EditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditStudiosLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addGroup(EditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textEditStudioID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEditStudios)
+                    .addComponent(panelEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(EditStudiosLayout.createSequentialGroup()
+                        .addComponent(buttonUpdateEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonResetEdiStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(100, 100, 100))
+        );
+        EditStudiosLayout.setVerticalGroup(
+            EditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditStudiosLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(labelEditStudios)
+                .addGap(48, 48, 48)
+                .addComponent(textEditStudioID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(EditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonResetEdiStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonUpdateEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(316, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab("tab6", EditStudios);
+
+        EditPublishers.setBackground(new java.awt.Color(22, 25, 32));
+
+        labelEditPublishers.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        labelEditPublishers.setForeground(new java.awt.Color(255, 255, 255));
+        labelEditPublishers.setText("EDIT PUBLISHER");
+
+        labelEditPublisherName.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditPublisherName.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditPublisherName.setText("Publisher Name");
+
+        textEditPublisherName.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        labelEditPublisherCountry.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditPublisherCountry.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditPublisherCountry.setText("Publisher Country");
+
+        textEditPublisherCountry.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        javax.swing.GroupLayout panelEditPublishersLayout = new javax.swing.GroupLayout(panelEditPublishers);
+        panelEditPublishers.setLayout(panelEditPublishersLayout);
+        panelEditPublishersLayout.setHorizontalGroup(
+            panelEditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEditPublishersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textEditPublisherName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEditPublisherName))
+                .addGap(82, 82, 82)
+                .addGroup(panelEditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textEditPublisherCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEditPublisherCountry))
+                .addContainerGap(392, Short.MAX_VALUE))
+        );
+        panelEditPublishersLayout.setVerticalGroup(
+            panelEditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEditPublishersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelEditPublisherName)
+                    .addComponent(labelEditPublisherCountry))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelEditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textEditPublisherName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textEditPublisherCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
+        );
+
+        buttonUpdateEditPublishers.setBackground(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditPublishers.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        buttonUpdateEditPublishers.setText("UPDATE");
+        buttonUpdateEditPublishers.setBorderColor(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditPublishers.setColor(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditPublishers.setColorClick(new java.awt.Color(0, 76, 193));
+        buttonUpdateEditPublishers.setColorOver(new java.awt.Color(40, 136, 253));
+        buttonUpdateEditPublishers.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        buttonResetEditPublishers.setBackground(new java.awt.Color(39, 59, 75));
+        buttonResetEditPublishers.setForeground(new java.awt.Color(103, 193, 245));
+        buttonResetEditPublishers.setText("RESET");
+        buttonResetEditPublishers.setBorderColor(new java.awt.Color(39, 59, 75));
+        buttonResetEditPublishers.setColor(new java.awt.Color(39, 59, 75));
+        buttonResetEditPublishers.setColorClick(new java.awt.Color(19, 39, 55));
+        buttonResetEditPublishers.setColorOver(new java.awt.Color(79, 99, 115));
+        buttonResetEditPublishers.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        textEditPublisherID.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        javax.swing.GroupLayout EditPublishersLayout = new javax.swing.GroupLayout(EditPublishers);
+        EditPublishers.setLayout(EditPublishersLayout);
+        EditPublishersLayout.setHorizontalGroup(
+            EditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditPublishersLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addGroup(EditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textEditPublisherID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(EditPublishersLayout.createSequentialGroup()
+                        .addComponent(buttonUpdateEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonResetEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelEditPublishers))
+                .addGap(100, 100, 100))
+        );
+        EditPublishersLayout.setVerticalGroup(
+            EditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditPublishersLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(labelEditPublishers)
+                .addGap(48, 48, 48)
+                .addComponent(textEditPublisherID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(EditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonResetEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonUpdateEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(316, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab("tab7", EditPublishers);
+
+        EditGames.setBackground(new java.awt.Color(22, 25, 32));
+
+        labelEditGames.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        labelEditGames.setForeground(new java.awt.Color(255, 255, 255));
+        labelEditGames.setText("EDIT GAME");
+
+        labelEditGameTitle.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditGameTitle.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditGameTitle.setText("Game Title");
+
+        textEditGameTitle.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        labelEditStudio.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditStudio.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditStudio.setText("Studio");
+
+        comboBoxEditStudio.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        labelEditPublisher.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditPublisher.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditPublisher.setText("Publisher");
+
+        comboBoxEditPublisher.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        labelEditGenre.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditGenre.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditGenre.setText("Genre");
+
+        textEditGenre.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        labelEditReleaseDate.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditReleaseDate.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditReleaseDate.setText("Release Date");
+
+        textEditReleaseDate.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        buttonEditReleaseDate.setBackground(new java.awt.Color(103, 193, 245));
+        buttonEditReleaseDate.setText("...");
+        buttonEditReleaseDate.setAlignmentY(0.0F);
+        buttonEditReleaseDate.setBorderColor(new java.awt.Color(103, 193, 245));
+        buttonEditReleaseDate.setColor(new java.awt.Color(103, 193, 245));
+        buttonEditReleaseDate.setColorClick(new java.awt.Color(63, 153, 205));
+        buttonEditReleaseDate.setColorOver(new java.awt.Color(143, 233, 245));
+        buttonEditReleaseDate.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        labelEditPrice.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditPrice.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditPrice.setText("Price");
+
+        textEditPrice.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        javax.swing.GroupLayout panelEditGamesLayout = new javax.swing.GroupLayout(panelEditGames);
+        panelEditGames.setLayout(panelEditGamesLayout);
+        panelEditGamesLayout.setHorizontalGroup(
+            panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEditGamesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelEditGamesLayout.createSequentialGroup()
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textEditGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelEditGenre))
+                        .addGap(82, 82, 82)
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelEditReleaseDate)
+                            .addComponent(textEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(152, 152, 152)
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelEditPrice)
+                            .addComponent(textEditPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelEditGamesLayout.createSequentialGroup()
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(buttonEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelEditGamesLayout.createSequentialGroup()
+                                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textEditGameTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelEditGameTitle))
+                                .addGap(82, 82, 82)
+                                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelEditStudio)
+                                    .addComponent(comboBoxEditStudio, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(82, 82, 82)
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelEditPublisher)
+                            .addComponent(comboBoxEditPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+        panelEditGamesLayout.setVerticalGroup(
+            panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEditGamesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelEditGameTitle)
+                    .addComponent(labelEditPublisher)
+                    .addComponent(labelEditStudio))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textEditGameTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(comboBoxEditStudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboBoxEditPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelEditGenre)
+                    .addComponent(labelEditPrice)
+                    .addComponent(labelEditReleaseDate))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(textEditGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textEditPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+
+        buttonUpdateEditGames.setBackground(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditGames.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        buttonUpdateEditGames.setText("UPDATE");
+        buttonUpdateEditGames.setBorderColor(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditGames.setColor(new java.awt.Color(0, 96, 213));
+        buttonUpdateEditGames.setColorClick(new java.awt.Color(0, 76, 193));
+        buttonUpdateEditGames.setColorOver(new java.awt.Color(40, 136, 253));
+        buttonUpdateEditGames.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        buttonResetEditGames.setBackground(new java.awt.Color(39, 59, 75));
+        buttonResetEditGames.setForeground(new java.awt.Color(103, 193, 245));
+        buttonResetEditGames.setText("RESET");
+        buttonResetEditGames.setBorderColor(new java.awt.Color(39, 59, 75));
+        buttonResetEditGames.setColor(new java.awt.Color(39, 59, 75));
+        buttonResetEditGames.setColorClick(new java.awt.Color(19, 39, 55));
+        buttonResetEditGames.setColorOver(new java.awt.Color(79, 99, 115));
+        buttonResetEditGames.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        textEditGameID.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        javax.swing.GroupLayout EditGamesLayout = new javax.swing.GroupLayout(EditGames);
+        EditGames.setLayout(EditGamesLayout);
+        EditGamesLayout.setHorizontalGroup(
+            EditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditGamesLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addGroup(EditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textEditGameID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelEditGames)
+                    .addGroup(EditGamesLayout.createSequentialGroup()
+                        .addComponent(buttonUpdateEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonResetEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(91, Short.MAX_VALUE))
+        );
+        EditGamesLayout.setVerticalGroup(
+            EditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EditGamesLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(labelEditGames)
+                .addGap(47, 47, 47)
+                .addComponent(textEditGameID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(EditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonResetEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonUpdateEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(230, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab("tab8", EditGames);
 
         getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(-5, 55, 1290, 670));
 
@@ -1867,6 +2466,43 @@ public class Dashboard extends javax.swing.JFrame {
         dateChooser.showPopup();
     }//GEN-LAST:event_buttonReleaseDateMouseClicked
 
+    private void buttonDeleteStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteStudiosMouseClicked
+        deleteRow(1);
+    }//GEN-LAST:event_buttonDeleteStudiosMouseClicked
+
+    private void buttonDeletePublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeletePublishersMouseClicked
+        deleteRow(2);
+    }//GEN-LAST:event_buttonDeletePublishersMouseClicked
+
+    private void buttonDeleteGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteGamesMouseClicked
+        deleteRow(3);
+    }//GEN-LAST:event_buttonDeleteGamesMouseClicked
+
+    private void buttonDeleteUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteUsersMouseClicked
+        deleteRow(4);
+    }//GEN-LAST:event_buttonDeleteUsersMouseClicked
+
+    private void buttonDeleteTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteTransactionsMouseClicked
+        deleteRow(5);
+    }//GEN-LAST:event_buttonDeleteTransactionsMouseClicked
+
+    private void buttonEditStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditStudiosMouseClicked
+        tabbedPane.setSelectedComponent(EditStudios);
+        rowToInput(1);
+    }//GEN-LAST:event_buttonEditStudiosMouseClicked
+
+    private void buttonEditPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditPublishersMouseClicked
+        tabbedPane.setSelectedComponent(EditPublishers);
+        rowToInput(2);
+    }//GEN-LAST:event_buttonEditPublishersMouseClicked
+
+    private void buttonEditGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditGamesMouseClicked
+        tabbedPane.setSelectedComponent(EditGames);
+        loadStudio();
+        loadPublisher();
+        rowToInput(3);
+    }//GEN-LAST:event_buttonEditGamesMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1906,6 +2542,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel CreateGames;
     private javax.swing.JPanel CreatePublishers;
     private javax.swing.JPanel CreateStudios;
+    private javax.swing.JPanel EditGames;
+    private javax.swing.JPanel EditPublishers;
+    private javax.swing.JPanel EditStudios;
     private javax.swing.JPanel Games;
     private javax.swing.JPanel Menu;
     private javax.swing.JPanel Publishers;
@@ -1923,6 +2562,7 @@ public class Dashboard extends javax.swing.JFrame {
     private ButtonRound buttonDeleteUsers;
     private ButtonRound buttonEditGames;
     private ButtonRound buttonEditPublishers;
+    private ButtonRound buttonEditReleaseDate;
     private ButtonRound buttonEditStudios;
     private ButtonRound buttonGames;
     private ButtonRound buttonPublishers;
@@ -1931,6 +2571,9 @@ public class Dashboard extends javax.swing.JFrame {
     private ButtonRound buttonResetCreateGames;
     private ButtonRound buttonResetCreatePublishers;
     private ButtonRound buttonResetCreateStudios;
+    private ButtonRound buttonResetEdiStudios;
+    private ButtonRound buttonResetEditGames;
+    private ButtonRound buttonResetEditPublishers;
     private ButtonRound buttonSearchGames;
     private ButtonRound buttonSearchPublishers;
     private ButtonRound buttonSearchStudios;
@@ -1943,7 +2586,12 @@ public class Dashboard extends javax.swing.JFrame {
     private ButtonRound buttonSubmitCreateStudios;
     private ButtonRound buttonTransactions;
     private ButtonRound buttonUpdate;
+    private ButtonRound buttonUpdateEditGames;
+    private ButtonRound buttonUpdateEditPublishers;
+    private ButtonRound buttonUpdateEditStudios;
     private ButtonRound buttonUsers;
+    private ComboBoxRound comboBoxEditPublisher;
+    private ComboBoxRound comboBoxEditStudio;
     private ComboBoxRound comboBoxPublisher;
     private ComboBoxRound comboBoxStudio;
     private com.raven.datechooser.DateChooser dateChooser;
@@ -1952,6 +2600,20 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel labelCreatePublishers;
     private javax.swing.JLabel labelCreateStudios;
     private javax.swing.JLabel labelDirector;
+    private javax.swing.JLabel labelEditDirector;
+    private javax.swing.JLabel labelEditGameTitle;
+    private javax.swing.JLabel labelEditGames;
+    private javax.swing.JLabel labelEditGenre;
+    private javax.swing.JLabel labelEditPrice;
+    private javax.swing.JLabel labelEditPublisher;
+    private javax.swing.JLabel labelEditPublisherCountry;
+    private javax.swing.JLabel labelEditPublisherName;
+    private javax.swing.JLabel labelEditPublishers;
+    private javax.swing.JLabel labelEditReleaseDate;
+    private javax.swing.JLabel labelEditStudio;
+    private javax.swing.JLabel labelEditStudioCountry;
+    private javax.swing.JLabel labelEditStudioName;
+    private javax.swing.JLabel labelEditStudios;
     private javax.swing.JLabel labelGameTitle;
     private javax.swing.JLabel labelGames;
     private javax.swing.JLabel labelGenre;
@@ -1971,6 +2633,9 @@ public class Dashboard extends javax.swing.JFrame {
     private PanelRound panelCreateGames;
     private PanelRound panelCreatePublishers;
     private PanelRound panelCreateStudios;
+    private PanelRound panelEditGames;
+    private PanelRound panelEditPublishers;
+    private PanelRound panelEditStudios;
     private javax.swing.JScrollPane scrollPaneGames;
     private javax.swing.JScrollPane scrollPanePublishers;
     private javax.swing.JScrollPane scrollPaneStudios;
@@ -1983,6 +2648,18 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JTable tableTransactions;
     private javax.swing.JTable tableUsers;
     private TextFieldRound textDirector;
+    private TextFieldRound textEditDirector;
+    private TextFieldRound textEditGameID;
+    private TextFieldRound textEditGameTitle;
+    private TextFieldRound textEditGenre;
+    private TextFieldRound textEditPrice;
+    private TextFieldRound textEditPublisherCountry;
+    private TextFieldRound textEditPublisherID;
+    private TextFieldRound textEditPublisherName;
+    private TextFieldRound textEditReleaseDate;
+    private TextFieldRound textEditStudioCountry;
+    private TextFieldRound textEditStudioID;
+    private TextFieldRound textEditStudioName;
     private TextFieldRound textField;
     private TextFieldRound textGameTitle;
     private TextFieldRound textGenre;

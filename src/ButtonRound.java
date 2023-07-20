@@ -75,12 +75,12 @@ public class ButtonRound extends JButton {
         setForeground(new Color(255, 255, 255));
         setBorder(BorderFactory.createEmptyBorder());
         setFocusable(false);
+        setContentAreaFilled(false);
 
         setColor(new Color(111, 166, 32));
         colorOver = new Color(179, 250, 160);
         colorClick = new Color(152, 184, 144);
         borderColor = new Color(30, 136, 56);
-        setContentAreaFilled(false);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -93,7 +93,6 @@ public class ButtonRound extends JButton {
             public void mouseExited(MouseEvent me) {
                 setBackground(color);
                 over = false;
-
             }
 
             @Override
@@ -129,15 +128,15 @@ public class ButtonRound extends JButton {
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         this.setIcon(scaledIcon);
     }
-    
-    public void setEditIcon(){
+
+    public void setEditIcon() {
         ImageIcon icon = new ImageIcon("lib/edit-icon.png");
         Image img = icon.getImage();
         Image imgScale = img.getScaledInstance(this.getWidth() - 80, this.getHeight() - 8, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         this.setIcon(scaledIcon);
     }
-    
+
     public void setDeleteIcon() {
         ImageIcon icon = new ImageIcon("lib/delete-icon.png");
         Image img = icon.getImage();
