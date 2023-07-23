@@ -127,7 +127,6 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonStoreMouseClicked"/>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonStoreActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -165,9 +164,9 @@
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="labelStudios" min="-2" max="-2" attributes="0"/>
-                          <Component id="scrollPanel" min="-2" pref="1085" max="-2" attributes="0"/>
+                          <Component id="scrollPane" min="-2" pref="1090" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -176,8 +175,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="labelStudios" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
-                      <Component id="scrollPanel" min="-2" pref="382" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
+                      <Component id="scrollPane" min="-2" pref="382" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -195,8 +194,11 @@
                 <Property name="text" type="java.lang.String" value="GAMES"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JScrollPane" name="scrollPanel">
+            <Container class="javax.swing.JScrollPane" name="scrollPane">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="20" green="19" red="16" type="rgb"/>
+                </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -208,12 +210,6 @@
               </Properties>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="mainPanel">
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                </Container>
-              </SubComponents>
             </Container>
           </SubComponents>
         </Container>

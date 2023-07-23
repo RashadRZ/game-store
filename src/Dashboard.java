@@ -125,7 +125,75 @@ public class Dashboard extends javax.swing.JFrame {
         return null;
     }
 
-    private void setTableLoad(int n) {
+    public void tableHeaderSetColor() {
+        tableStudios.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tableStudios.getTableHeader().setBackground(new Color(40, 46, 57));
+        tableStudios.getTableHeader().setForeground(new Color(255, 255, 255));
+        tableStudios.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tableStudios.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
+        scrollPaneStudios.getViewport().setBackground(new Color(31, 39, 51));
+
+        tablePublishers.getTableHeader().setOpaque(false);
+        tablePublishers.getTableHeader().setBackground(new Color(40, 46, 57));
+        tablePublishers.getTableHeader().setForeground(new Color(255, 255, 255));
+        tablePublishers.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tablePublishers.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
+        scrollPanePublishers.getViewport().setBackground(new Color(31, 39, 51));
+
+        tableGames.getTableHeader().setOpaque(false);
+        tableGames.getTableHeader().setBackground(new Color(40, 46, 57));
+        tableGames.getTableHeader().setForeground(new Color(255, 255, 255));
+        tableGames.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tableGames.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
+        scrollPaneGames.getViewport().setBackground(new Color(31, 39, 51));
+
+        tableUsers.getTableHeader().setOpaque(false);
+        tableUsers.getTableHeader().setBackground(new Color(40, 46, 57));
+        tableUsers.getTableHeader().setForeground(new Color(255, 255, 255));
+        tableUsers.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tableUsers.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
+        scrollPaneUsers.getViewport().setBackground(new Color(31, 39, 51));
+
+        tableTransactions.getTableHeader().setOpaque(false);
+        tableTransactions.getTableHeader().setBackground(new Color(40, 46, 57));
+        tableTransactions.getTableHeader().setForeground(new Color(255, 255, 255));
+        tableTransactions.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        tableTransactions.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
+        scrollPaneTransactions.getViewport().setBackground(new Color(31, 39, 51));
+    }
+
+    public void buttonMenuRemoveBold() {
+        buttonStudios.removeBold();
+        buttonPublishers.removeBold();
+        buttonGames.removeBold();
+        buttonUsers.removeBold();
+        buttonTransactions.removeBold();
+    }
+
+    public void buttonsSearchSetIcon() {
+        buttonSearchStudios.setSearchIcon();
+        buttonSearchPublishers.setSearchIcon();
+        buttonSearchGames.setSearchIcon();
+        buttonSearchUsers.setSearchIcon();
+        buttonSearchTransactions.setSearchIcon();
+    }
+
+    public void buttonsEditSetIcon() {
+        buttonEditStudios.setEditIcon();
+        buttonEditPublishers.setEditIcon();
+        buttonEditGames.setEditIcon();
+    }
+
+    public void buttonsDeleteSetIcon() {
+        buttonDeleteStudios.setDeleteIcon();
+        buttonDeletePublishers.setDeleteIcon();
+        buttonDeleteGames.setDeleteIcon();
+        buttonDeleteUsers.setDeleteIcon();
+        buttonDeleteTransactions.setDeleteIcon();
+    }
+
+    // CRUD
+    private void setTableLoad(int table) {
         String data[];
         String stat = "";
         try {
@@ -135,7 +203,7 @@ public class Dashboard extends javax.swing.JFrame {
             String SQL = "";
             ResultSet res;
             TableColumn colToDelete;
-            switch (n) {
+            switch (table) {
                 case 1:
                     data = new String[4];
                     SQL += "SELECT * FROM studios";
@@ -230,8 +298,8 @@ public class Dashboard extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-
-    private void search(int n) {
+    
+    private void search(int table) {
         try {
             String data[];
             Class.forName(driver);
@@ -239,7 +307,7 @@ public class Dashboard extends javax.swing.JFrame {
             Statement stt = conn.createStatement();
             String SQL = "";
             ResultSet res;
-            switch (n) {
+            switch (table) {
                 case 1:
                     tableModelStudios.setRowCount(0);
                     data = new String[4];
@@ -330,76 +398,9 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
-    public void tableHeaderSetColor() {
-        tableStudios.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        tableStudios.getTableHeader().setBackground(new Color(40, 46, 57));
-        tableStudios.getTableHeader().setForeground(new Color(255, 255, 255));
-        tableStudios.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        tableStudios.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
-        scrollPaneStudios.getViewport().setBackground(new Color(31, 39, 51));
-
-        tablePublishers.getTableHeader().setOpaque(false);
-        tablePublishers.getTableHeader().setBackground(new Color(40, 46, 57));
-        tablePublishers.getTableHeader().setForeground(new Color(255, 255, 255));
-        tablePublishers.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        tablePublishers.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
-        scrollPanePublishers.getViewport().setBackground(new Color(31, 39, 51));
-
-        tableGames.getTableHeader().setOpaque(false);
-        tableGames.getTableHeader().setBackground(new Color(40, 46, 57));
-        tableGames.getTableHeader().setForeground(new Color(255, 255, 255));
-        tableGames.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        tableGames.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
-        scrollPaneGames.getViewport().setBackground(new Color(31, 39, 51));
-
-        tableUsers.getTableHeader().setOpaque(false);
-        tableUsers.getTableHeader().setBackground(new Color(40, 46, 57));
-        tableUsers.getTableHeader().setForeground(new Color(255, 255, 255));
-        tableUsers.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        tableUsers.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
-        scrollPaneUsers.getViewport().setBackground(new Color(31, 39, 51));
-
-        tableTransactions.getTableHeader().setOpaque(false);
-        tableTransactions.getTableHeader().setBackground(new Color(40, 46, 57));
-        tableTransactions.getTableHeader().setForeground(new Color(255, 255, 255));
-        tableTransactions.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        tableTransactions.getTableHeader().setBorder(new LineBorder(new Color(40, 46, 57)));
-        scrollPaneTransactions.getViewport().setBackground(new Color(31, 39, 51));
-    }
-
-    public void buttonMenuRemoveBold() {
-        buttonStudios.removeBold();
-        buttonPublishers.removeBold();
-        buttonGames.removeBold();
-        buttonUsers.removeBold();
-        buttonTransactions.removeBold();
-    }
-
-    public void buttonsSearchSetIcon() {
-        buttonSearchStudios.setSearchIcon();
-        buttonSearchPublishers.setSearchIcon();
-        buttonSearchGames.setSearchIcon();
-        buttonSearchUsers.setSearchIcon();
-        buttonSearchTransactions.setSearchIcon();
-    }
-
-    public void buttonsEditSetIcon() {
-        buttonEditStudios.setEditIcon();
-        buttonEditPublishers.setEditIcon();
-        buttonEditGames.setEditIcon();
-    }
-
-    public void buttonsDeleteSetIcon() {
-        buttonDeleteStudios.setDeleteIcon();
-        buttonDeletePublishers.setDeleteIcon();
-        buttonDeleteGames.setDeleteIcon();
-        buttonDeleteUsers.setDeleteIcon();
-        buttonDeleteTransactions.setDeleteIcon();
-    }
-
-    public void insert(int n) {
+    public void insert(int table) {
         String data[];
-        switch (n) {
+        switch (table) {
             case 1:
                 data = new String[4];
                 if ((textStudioName.getText().isEmpty()) || (textDirector.getText().isEmpty()) || (textStudioCountry.getText().isEmpty())) {
@@ -511,9 +512,68 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
-    public void update(int n, int row) {
+    public void editRow(int table) {
+        try {
+            int row;
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(database, user, pass);
+            Statement stt = conn.createStatement();
+            ResultSet res;
+            String SQL = "";
+            switch (table) {
+                case 1:
+                    row = tableStudios.getSelectedRow();
+                    SQL += "SELECT * FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
+                    res = stt.executeQuery(SQL);
+                    while (res.next()) {
+                        textEditStudioID.setText(res.getString(1));
+                        textEditStudioName.setText(res.getString(2));
+                        textEditDirector.setText(res.getString(3));
+                        textEditStudioCountry.setText(res.getString(4));
+                    }
+                    textEditStudioID.setVisible(false);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 2:
+                    row = tablePublishers.getSelectedRow();
+                    SQL += "SELECT * FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
+                    res = stt.executeQuery(SQL);
+                    while (res.next()) {
+                        textEditPublisherID.setText(res.getString(1));
+                        textEditPublisherName.setText(res.getString(2));
+                        textEditPublisherCountry.setText(res.getString(3));
+                    }
+                    textEditPublisherID.setVisible(false);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 3:
+                    row = tableGames.getSelectedRow();
+                    SQL += "SELECT * FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
+                    res = stt.executeQuery(SQL);
+                    while (res.next()) {
+                        textEditGameID.setText(res.getString(1));
+                        comboBoxEditStudio.setSelectedItem(res.getString(2));
+                        comboBoxEditPublisher.setSelectedItem(res.getString(3));
+                        textEditGameTitle.setText(res.getString(4));
+                        textEditGenre.setText(res.getString(5));
+                        textEditReleaseDate.setText(res.getString(6));
+                        textEditPrice.setText(res.getString(7));
+                    }
+                    textEditGameID.setVisible(false);
+                    stt.close();
+                    conn.close();
+                    break;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public void update(int table, int row) {
         String data[];
-        switch (n) {
+        switch (table) {
             case 1:
                 data = new String[4];
                 if ((textEditStudioName.getText().isEmpty()) || (textEditDirector.getText().isEmpty()) || (textEditStudioCountry.getText().isEmpty())) {
@@ -610,8 +670,62 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
-    public void resetForm(int n) {
-        switch (n) {
+    public void delete(int table) {
+        try {
+            int row;
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(database, user, pass);
+            Statement stt = conn.createStatement();
+            String SQL = "";
+            switch (table) {
+                case 1:
+                    row = tableStudios.getSelectedRow();
+                    SQL += "DELETE FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelStudios.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 2:
+                    row = tablePublishers.getSelectedRow();
+                    SQL += "DELETE FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelPublishers.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 3:
+                    row = tableGames.getSelectedRow();
+                    SQL += "DELETE FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelGames.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 4:
+                    row = tableUsers.getSelectedRow();
+                    SQL += "DELETE FROM users WHERE userID='" + tableModelUsers.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelUsers.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+                case 5:
+                    row = tableTransactions.getSelectedRow();
+                    SQL += "DELETE FROM transactions WHERE transactionID='" + tableModelTransactions.getValueAt(row, 0) + "'";
+                    stt.executeUpdate(SQL);
+                    tableModelTransactions.removeRow(row);
+                    stt.close();
+                    conn.close();
+                    break;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.DEFAULT_OPTION);
+        }
+    }
+
+    public void resetForm(int table) {
+        switch (table) {
             case 1:
                 textStudioName.setText("");
                 textDirector.setText("");
@@ -632,6 +746,7 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
+    // Load combo box value
     public class StudioItem {
 
         int studioID;
@@ -717,119 +832,6 @@ public class Dashboard extends javax.swing.JFrame {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             System.exit(0);
-        }
-    }
-
-    public void delete(int n) {
-        try {
-            int row;
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection(database, user, pass);
-            Statement stt = conn.createStatement();
-            String SQL = "";
-            switch (n) {
-                case 1:
-                    row = tableStudios.getSelectedRow();
-                    SQL += "DELETE FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
-                    stt.executeUpdate(SQL);
-                    tableModelStudios.removeRow(row);
-                    stt.close();
-                    conn.close();
-                    break;
-                case 2:
-                    row = tablePublishers.getSelectedRow();
-                    SQL += "DELETE FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
-                    stt.executeUpdate(SQL);
-                    tableModelPublishers.removeRow(row);
-                    stt.close();
-                    conn.close();
-                    break;
-                case 3:
-                    row = tableGames.getSelectedRow();
-                    SQL += "DELETE FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
-                    stt.executeUpdate(SQL);
-                    tableModelGames.removeRow(row);
-                    stt.close();
-                    conn.close();
-                    break;
-                case 4:
-                    row = tableUsers.getSelectedRow();
-                    SQL += "DELETE FROM users WHERE userID='" + tableModelUsers.getValueAt(row, 0) + "'";
-                    stt.executeUpdate(SQL);
-                    tableModelUsers.removeRow(row);
-                    stt.close();
-                    conn.close();
-                    break;
-                case 5:
-                    row = tableTransactions.getSelectedRow();
-                    SQL += "DELETE FROM transactions WHERE transactionID='" + tableModelTransactions.getValueAt(row, 0) + "'";
-                    stt.executeUpdate(SQL);
-                    tableModelTransactions.removeRow(row);
-                    stt.close();
-                    conn.close();
-                    break;
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.DEFAULT_OPTION);
-        }
-    }
-
-    public void rowToInput(int n) {
-        try {
-            int row;
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection(database, user, pass);
-            Statement stt = conn.createStatement();
-            ResultSet res;
-            String SQL = "";
-            switch (n) {
-                case 1:
-                    row = tableStudios.getSelectedRow();
-                    SQL += "SELECT * FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
-                    res = stt.executeQuery(SQL);
-                    while (res.next()) {
-                        textEditStudioID.setText(res.getString(1));
-                        textEditStudioName.setText(res.getString(2));
-                        textEditDirector.setText(res.getString(3));
-                        textEditStudioCountry.setText(res.getString(4));
-                    }
-                    textEditStudioID.setVisible(false);
-                    stt.close();
-                    conn.close();
-                    break;
-                case 2:
-                    row = tablePublishers.getSelectedRow();
-                    SQL += "SELECT * FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
-                    res = stt.executeQuery(SQL);
-                    while (res.next()) {
-                        textEditPublisherID.setText(res.getString(1));
-                        textEditPublisherName.setText(res.getString(2));
-                        textEditPublisherCountry.setText(res.getString(3));
-                    }
-                    textEditPublisherID.setVisible(false);
-                    stt.close();
-                    conn.close();
-                    break;
-                case 3:
-                    row = tableGames.getSelectedRow();
-                    SQL += "SELECT * FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
-                    res = stt.executeQuery(SQL);
-                    while (res.next()) {
-                        textEditGameID.setText(res.getString(1));
-                        comboBoxEditStudio.setSelectedItem(res.getString(2));
-                        comboBoxEditPublisher.setSelectedItem(res.getString(3));
-                        textEditGameTitle.setText(res.getString(4));
-                        textEditGenre.setText(res.getString(5));
-                        textEditReleaseDate.setText(res.getString(6));
-                        textEditPrice.setText(res.getString(7));
-                    }
-                    textEditGameID.setVisible(false);
-                    stt.close();
-                    conn.close();
-                    break;
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -2640,31 +2642,31 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void buttonEditStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditStudiosMouseClicked
         tabbedPane.setSelectedComponent(EditStudios);
-        rowToInput(1);
+        editRow(1);
     }//GEN-LAST:event_buttonEditStudiosMouseClicked
 
     private void buttonEditPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditPublishersMouseClicked
         tabbedPane.setSelectedComponent(EditPublishers);
-        rowToInput(2);
+        editRow(2);
     }//GEN-LAST:event_buttonEditPublishersMouseClicked
 
     private void buttonEditGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditGamesMouseClicked
         tabbedPane.setSelectedComponent(EditGames);
         loadStudio();
         loadPublisher();
-        rowToInput(3);
+        editRow(3);
     }//GEN-LAST:event_buttonEditGamesMouseClicked
 
     private void buttonResetEdiStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEdiStudiosMouseClicked
-        rowToInput(1);
+        editRow(1);
     }//GEN-LAST:event_buttonResetEdiStudiosMouseClicked
 
     private void buttonResetEditPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEditPublishersMouseClicked
-        rowToInput(2);
+        editRow(2);
     }//GEN-LAST:event_buttonResetEditPublishersMouseClicked
 
     private void buttonResetEditGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEditGamesMouseClicked
-        rowToInput(3);
+        editRow(3);
     }//GEN-LAST:event_buttonResetEditGamesMouseClicked
 
     private void buttonUpdateEditStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUpdateEditStudiosMouseClicked

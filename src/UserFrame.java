@@ -2,24 +2,20 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import static java.awt.GridBagConstraints.NORTHWEST;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.SystemColor;
-import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import swing.PictureBox;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,11 +28,117 @@ import swing.PictureBox;
  */
 public class UserFrame extends javax.swing.JFrame {
 
+    Connect dbsetting;
+    String driver, database, user, pass;
+    Object table;
+
     /**
      * Creates new form UserFrame
      */
     public UserFrame() {
         initComponents();
+
+        dbsetting = new Connect();
+        driver = dbsetting.SettingPanel("DBDriver");
+        database = dbsetting.SettingPanel("DBDatabase");
+        user = dbsetting.SettingPanel("DBUsername");
+        pass = dbsetting.SettingPanel("DBPassword");
+
+        loadMyGames();
+    }
+
+    public void loadMyGames() {
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        JPanel myGamesPanel = new JPanel();
+        scrollPane.setViewportView(myGamesPanel);
+        myGamesPanel.setLayout(new BorderLayout(0, 0));
+
+        JPanel columnPanel = new JPanel();
+        myGamesPanel.add(columnPanel, BorderLayout.NORTH);
+        columnPanel.setLayout(new GridLayout(0, 1, 0, 1));
+        columnPanel.setBackground(Color.gray);
+
+        try {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(database, user, pass);
+            Statement stt = conn.createStatement();
+            String SQL = "SELECT gameID, game_title, studio_name, publisher_name, release_date, genre, price FROM games LEFT JOIN studios ON games.studioID=studios.studioID LEFT JOIN publishers ON games.publisherID=publishers.publisherID";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                JPanel rowPanel = new JPanel();
+                rowPanel.setPreferredSize(new Dimension(400, 200));
+                rowPanel.setLayout(null);
+                rowPanel.setBackground(new Color(61, 76, 93));
+
+                ImageIcon icon = new ImageIcon("C:\\Users\\lenovo\\OneDrive\\Documents\\NetBeansProjects\\GameStore\\src\\images\\1.jpg");
+                PictureBox image = new PictureBox();
+                image.setBounds(0, 0, 400, 200);
+                image.setImage(icon);
+                rowPanel.add(image);
+
+                JLabel title = new JLabel(res.getString(2));
+                title.setBounds(420, 10, 500, 30);
+                title.setFont(new Font("Arial", Font.BOLD, 24));
+                title.setForeground(Color.WHITE);
+                rowPanel.add(title);
+
+                JLabel studio = new JLabel("Studio:" + res.getString(3));
+                studio.setBounds(420, 40, 500, 30);
+                studio.setFont(new Font("Arial", Font.PLAIN, 18));
+                studio.setForeground(Color.GRAY);
+                rowPanel.add(studio);
+
+                JLabel publisher = new JLabel("Publisher:" + res.getString(4));
+                publisher.setBounds(420, 60, 500, 30);
+                publisher.setFont(new Font("Arial", Font.PLAIN, 18));
+                publisher.setForeground(Color.GRAY);
+                rowPanel.add(publisher);
+
+                JLabel date = new JLabel("Release Date:" + res.getString(5));
+                date.setBounds(420, 100, 500, 30);
+                date.setFont(new Font("Arial", Font.PLAIN, 18));
+                date.setForeground(Color.GRAY);
+                rowPanel.add(date);
+
+                ButtonRound genre = new ButtonRound();
+                genre.setText(res.getString(6));
+                genre.setBounds(420, 160, 100, 30);
+                genre.setFont(new Font("Arial", Font.PLAIN, 18));
+                genre.setForeground(Color.GRAY);
+                genre.setColor(new Color(61, 76, 93));
+                genre.setBorderColor(Color.GRAY);
+                rowPanel.add(genre);
+
+                TextFieldRound price = new TextFieldRound();
+                price.setText("$" + res.getString(7));
+                price.setBounds(850, 100, 80, 30);
+                price.setFont(new Font("Arial", Font.PLAIN, 18));
+                price.setForeground(Color.WHITE);
+                price.setBackground(Color.BLACK);
+                price.setHorizontalAlignment(SwingConstants.RIGHT);
+                price.setRoundTopLeft(0);
+                price.setRoundTopRight(0);
+                price.setRoundBottomLeft(0);
+                price.setRoundBottomRight(0);
+                rowPanel.add(price);
+
+                ButtonRound buy = new ButtonRound();
+                buy.setText("BUY");
+                buy.setBounds(930, 100, 100, 30);
+                buy.setFont(new Font("Arial", Font.PLAIN, 18));
+                buy.setForeground(Color.WHITE);
+                buy.setBorderColor(new Color(111, 166, 32));
+                buy.setRadius(0);
+                rowPanel.add(buy);
+
+                columnPanel.add(rowPanel);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
     }
 
     /**
@@ -54,8 +156,7 @@ public class UserFrame extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         Store = new javax.swing.JPanel();
         labelStudios = new javax.swing.JLabel();
-        scrollPanel = new javax.swing.JScrollPane();
-        mainPanel = new javax.swing.JPanel();
+        scrollPane = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(22, 25, 32));
@@ -93,11 +194,6 @@ public class UserFrame extends javax.swing.JFrame {
                 buttonStoreMouseClicked(evt);
             }
         });
-        buttonStore.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonStoreActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -127,13 +223,11 @@ public class UserFrame extends javax.swing.JFrame {
         labelStudios.setForeground(new java.awt.Color(255, 255, 255));
         labelStudios.setText("GAMES");
 
-        scrollPanel.setBorder(null);
-        scrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPanel.setPreferredSize(new java.awt.Dimension(100, 900));
-
-        mainPanel.setLayout(new java.awt.BorderLayout());
-        scrollPanel.setViewportView(mainPanel);
+        scrollPane.setBackground(new java.awt.Color(22, 25, 32));
+        scrollPane.setBorder(null);
+        scrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new java.awt.Dimension(100, 900));
 
         javax.swing.GroupLayout StoreLayout = new javax.swing.GroupLayout(Store);
         Store.setLayout(StoreLayout);
@@ -143,16 +237,16 @@ public class UserFrame extends javax.swing.JFrame {
                 .addGap(100, 100, 100)
                 .addGroup(StoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelStudios)
-                    .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1085, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(117, 117, 117))
+                    .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(100, 100, 100))
         );
         StoreLayout.setVerticalGroup(
             StoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(StoreLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(labelStudios)
-                .addGap(61, 61, 61)
-                .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(95, 95, 95)
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -171,10 +265,6 @@ public class UserFrame extends javax.swing.JFrame {
     private void buttonStoreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonStoreMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonStoreMouseClicked
-
-    private void buttonStoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStoreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonStoreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,7 +308,6 @@ public class UserFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelStudios;
-    private javax.swing.JPanel mainPanel;
-    private javax.swing.JScrollPane scrollPanel;
+    private javax.swing.JScrollPane scrollPane;
     // End of variables declaration//GEN-END:variables
 }
