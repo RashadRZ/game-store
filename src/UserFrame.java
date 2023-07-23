@@ -1,13 +1,31 @@
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import static java.awt.GridBagConstraints.NORTHWEST;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.SystemColor;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
+import swing.PictureBox;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author lenovo
@@ -19,23 +37,6 @@ public class UserFrame extends javax.swing.JFrame {
      */
     public UserFrame() {
         initComponents();
-        JButton btn = new JButton("Aku");
-        btn.setPreferredSize(new Dimension(100, 50));
-        JButton btn1 = new JButton("Kamu");
-        btn.setPreferredSize(new Dimension(100, 50));
-        JButton btn2 = new JButton("Kalian");
-        btn.setPreferredSize(new Dimension(100, 50));
-        JButton btn3 = new JButton("Kita");
-        btn.setPreferredSize(new Dimension(100, 50));
-        JButton btn4 = new JButton("SEMUA");
-        btn.setPreferredSize(new Dimension(100, 50));
-        panel.add(btn);
-        panel.add(btn1);
-        panel.add(btn2);
-        panel.add(btn3);
-        panel.add(btn4);
-        panel.revalidate();
-        panel.repaint();
     }
 
     /**
@@ -51,20 +52,13 @@ public class UserFrame extends javax.swing.JFrame {
         buttonMyGames = new ButtonRound();
         buttonStore = new ButtonRound();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        panelCoba = new javax.swing.JPanel();
-        labelMyGames1 = new javax.swing.JLabel();
-        panel = new PanelRound();
-        jPanel2 = new javax.swing.JPanel();
-        labelMyGames = new javax.swing.JLabel();
-        panelRound1 = new PanelRound();
-        buttonReset = new ButtonRound();
-        buttonReset1 = new ButtonRound();
-        buttonReset2 = new ButtonRound();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        Store = new javax.swing.JPanel();
+        labelStudios = new javax.swing.JLabel();
+        scrollPanel = new javax.swing.JScrollPane();
+        mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1280, 720));
+        setBackground(new java.awt.Color(22, 25, 32));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -113,7 +107,7 @@ public class UserFrame extends javax.swing.JFrame {
                 .addComponent(buttonMyGames, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonStore, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 764, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,150 +120,45 @@ public class UserFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, -1));
 
-        panelCoba.setBackground(new java.awt.Color(22, 25, 32));
+        Store.setBackground(new java.awt.Color(22, 25, 32));
+        Store.setPreferredSize(new java.awt.Dimension(1280, 642));
 
-        labelMyGames1.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
-        labelMyGames1.setForeground(new java.awt.Color(255, 255, 255));
-        labelMyGames1.setText("UWOGH");
+        labelStudios.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        labelStudios.setForeground(new java.awt.Color(255, 255, 255));
+        labelStudios.setText("GAMES");
 
-        panel.setPreferredSize(new java.awt.Dimension(1080, 150));
-        panel.setLayout(new java.awt.GridLayout(2, 3, 10, 10));
+        scrollPanel.setBorder(null);
+        scrollPanel.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPanel.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPanel.setPreferredSize(new java.awt.Dimension(100, 900));
 
-        javax.swing.GroupLayout panelCobaLayout = new javax.swing.GroupLayout(panelCoba);
-        panelCoba.setLayout(panelCobaLayout);
-        panelCobaLayout.setHorizontalGroup(
-            panelCobaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCobaLayout.createSequentialGroup()
+        mainPanel.setLayout(new java.awt.BorderLayout());
+        scrollPanel.setViewportView(mainPanel);
+
+        javax.swing.GroupLayout StoreLayout = new javax.swing.GroupLayout(Store);
+        Store.setLayout(StoreLayout);
+        StoreLayout.setHorizontalGroup(
+            StoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StoreLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addGroup(panelCobaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelMyGames1)
-                    .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 1080, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGroup(StoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelStudios)
+                    .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1085, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(117, 117, 117))
         );
-        panelCobaLayout.setVerticalGroup(
-            panelCobaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCobaLayout.createSequentialGroup()
+        StoreLayout.setVerticalGroup(
+            StoreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(StoreLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addComponent(labelMyGames1)
-                .addGap(144, 144, 144)
-                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(295, Short.MAX_VALUE))
+                .addComponent(labelStudios)
+                .addGap(61, 61, 61)
+                .addComponent(scrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("tab1", panelCoba);
+        jTabbedPane1.addTab("tab1", Store);
 
-        jPanel2.setBackground(new java.awt.Color(22, 25, 32));
-
-        labelMyGames.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
-        labelMyGames.setForeground(new java.awt.Color(255, 255, 255));
-        labelMyGames.setText("MY GAMES");
-
-        buttonReset.setBackground(new java.awt.Color(0, 0, 0));
-        buttonReset.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        buttonReset.setForeground(new java.awt.Color(103, 193, 245));
-        buttonReset.setBorderColor(new java.awt.Color(39, 59, 75));
-        buttonReset.setColor(new java.awt.Color(39, 59, 75));
-        buttonReset.setColorClick(new java.awt.Color(19, 39, 55));
-        buttonReset.setColorOver(new java.awt.Color(79, 99, 115));
-        buttonReset.setPreferredSize(new java.awt.Dimension(330, 150));
-        buttonReset.setRadius(0);
-
-        buttonReset1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        buttonReset1.setForeground(new java.awt.Color(103, 193, 245));
-        buttonReset1.setBorderColor(new java.awt.Color(39, 59, 75));
-        buttonReset1.setColor(new java.awt.Color(39, 59, 75));
-        buttonReset1.setColorClick(new java.awt.Color(19, 39, 55));
-        buttonReset1.setColorOver(new java.awt.Color(79, 99, 115));
-        buttonReset1.setPreferredSize(new java.awt.Dimension(330, 150));
-        buttonReset1.setRadius(0);
-
-        buttonReset2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        buttonReset2.setForeground(new java.awt.Color(103, 193, 245));
-        buttonReset2.setBorderColor(new java.awt.Color(39, 59, 75));
-        buttonReset2.setColor(new java.awt.Color(39, 59, 75));
-        buttonReset2.setColorClick(new java.awt.Color(19, 39, 55));
-        buttonReset2.setColorOver(new java.awt.Color(79, 99, 115));
-        buttonReset2.setPreferredSize(new java.awt.Dimension(330, 150));
-        buttonReset2.setRadius(0);
-
-        javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
-        panelRound1.setLayout(panelRound1Layout);
-        panelRound1Layout.setHorizontalGroup(
-            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRound1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(buttonReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(buttonReset1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(buttonReset2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        panelRound1Layout.setVerticalGroup(
-            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRound1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonReset2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonReset1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonReset, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(257, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelMyGames)
-                    .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(100, 100, 100))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(labelMyGames)
-                .addGap(98, 98, 98)
-                .addComponent(panelRound1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100))
-        );
-
-        jTabbedPane1.addTab("tab1", jPanel2);
-
-        jPanel3.setBackground(new java.awt.Color(22, 25, 32));
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1275, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 682, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("tab2", jPanel3);
-
-        jPanel4.setBackground(new java.awt.Color(22, 25, 32));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1275, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 682, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("tab3", jPanel4);
-
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 47, 1280, 710));
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-5, 50, 1290, 670));
 
         pack();
         setLocationRelativeTo(null);
@@ -323,20 +212,13 @@ public class UserFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel Store;
     private ButtonRound buttonMyGames;
-    private ButtonRound buttonReset;
-    private ButtonRound buttonReset1;
-    private ButtonRound buttonReset2;
     private ButtonRound buttonStore;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JLabel labelMyGames;
-    private javax.swing.JLabel labelMyGames1;
-    private PanelRound panel;
-    private javax.swing.JPanel panelCoba;
-    private PanelRound panelRound1;
+    private javax.swing.JLabel labelStudios;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JScrollPane scrollPanel;
     // End of variables declaration//GEN-END:variables
 }

@@ -144,6 +144,14 @@ public class ButtonRound extends JButton {
         ImageIcon scaledIcon = new ImageIcon(imgScale);
         this.setIcon(scaledIcon);
     }
+    
+    public void setGameImage(String loc){
+        ImageIcon icon = new ImageIcon(loc);
+        Image img = icon.getImage();
+        Image imgScale = img.getScaledInstance(this.getWidth() - 10, this.getHeight() - 8, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imgScale);
+        this.setIcon(scaledIcon);
+    }
 
     private boolean over;
     private Color color;

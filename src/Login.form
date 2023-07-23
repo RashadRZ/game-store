@@ -29,7 +29,7 @@
     <Container class="javax.swing.JTabbedPane" name="welcome">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="-50" width="1280" height="720"/>
+          <AbsoluteConstraints x="-20" y="-50" width="1300" height="720"/>
         </Constraint>
       </Constraints>
 

@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.TableColumn;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -54,6 +56,11 @@ public class Dashboard extends javax.swing.JFrame {
         buttonsDeleteSetIcon();
         tableHeaderSetColor();
 
+        UIManager UI = new UIManager();
+        UI.put("Panel.background", new ColorUIResource(40, 46, 57));
+        UI.put("OptionPane.background", new ColorUIResource(40, 46, 57));
+        UI.put("OptionPane.messageForeground", Color.white);
+
     }
 
     private javax.swing.table.DefaultTableModel tableModelStudios = getDefaultTableModel(1);
@@ -67,7 +74,7 @@ public class Dashboard extends javax.swing.JFrame {
             case 1:
                 return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Studio ID", "Studio Name", "Director", "Studio Country"}) {
                     boolean[] canEdit = new boolean[]{
-                        false, false, false
+                        false, false, false, false
                     };
 
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -77,7 +84,7 @@ public class Dashboard extends javax.swing.JFrame {
             case 2:
                 return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Publisher ID", "Publisher Name", "Publisher Country"}) {
                     boolean[] canEdit = new boolean[]{
-                        false, false, false
+                        false, false, false, false
                     };
 
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -224,7 +231,7 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
-    private void setTableSearch(int n) {
+    private void search(int n) {
         try {
             String data[];
             Class.forName(driver);
@@ -302,7 +309,7 @@ public class Dashboard extends javax.swing.JFrame {
                 case 5:
                     tableModelTransactions.setRowCount(0);
                     data = new String[4];
-                    SQL += "SELECT transactionsID, name, game_title, transaction_date FROM transactions LEFT JOIN users ON transactions.userID = users.UserID LEFT JOIN games ON transactions.gameID = games.gameID WHERE name LIKE '%" + textSearchTransactions.getText() + "%' OR game_title LIKE '%" + textSearchTransactions.getText() + "%' OR transaction_date LIKE '%" + textSearchTransactions.getText() + "%'";
+                    SQL += "SELECT transactionID, name, game_title, transaction_date FROM transactions LEFT JOIN users ON transactions.userID = users.UserID LEFT JOIN games ON transactions.gameID = games.gameID WHERE name LIKE '%" + textSearchTransactions.getText() + "%' OR game_title LIKE '%" + textSearchTransactions.getText() + "%' OR transaction_date LIKE '%" + textSearchTransactions.getText() + "%'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         data[0] = res.getString(1);
@@ -390,11 +397,11 @@ public class Dashboard extends javax.swing.JFrame {
         buttonDeleteTransactions.setDeleteIcon();
     }
 
-    public void insertIntoTable(int n) {
+    public void insert(int n) {
         String data[];
         switch (n) {
             case 1:
-                data = new String[3];
+                data = new String[4];
                 if ((textStudioName.getText().isEmpty()) || (textDirector.getText().isEmpty()) || (textStudioCountry.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Data can't be empty");
                 } else {
@@ -409,9 +416,14 @@ public class Dashboard extends javax.swing.JFrame {
                                 + "'" + textStudioCountry.getText() + "'"
                                 + ")";
                         stt.executeUpdate(SQL);
-                        data[0] = textStudioName.getText();
-                        data[1] = textDirector.getText();
-                        data[2] = textStudioCountry.getText();
+                        String SQL2 = "SELECT studioID FROM studios WHERE studioID=(SELECT max(studioID) FROM studios)";
+                        ResultSet res = stt.executeQuery(SQL2);
+                        while (res.next()) {
+                            data[0] = res.getString(1);
+                        }
+                        data[1] = textStudioName.getText();
+                        data[2] = textDirector.getText();
+                        data[3] = textStudioCountry.getText();
                         tableModelStudios.insertRow(0, data);
                         stt.close();
                         conn.close();
@@ -423,7 +435,7 @@ public class Dashboard extends javax.swing.JFrame {
                 }
                 break;
             case 2:
-                data = new String[2];
+                data = new String[3];
                 if ((textPublisherName.getText().isEmpty()) || (textPublisherCountry.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Data can't be empty");
                 } else {
@@ -437,8 +449,13 @@ public class Dashboard extends javax.swing.JFrame {
                                 + "'" + textPublisherCountry.getText() + "'"
                                 + ")";
                         stt.executeUpdate(SQL);
-                        data[0] = textPublisherName.getText();
-                        data[1] = textPublisherCountry.getText();
+                        String SQL2 = "SELECT publisherID FROM publishers WHERE publisherID=(SELECT max(publisherID) FROM publishers)";
+                        ResultSet res = stt.executeQuery(SQL2);
+                        while (res.next()) {
+                            data[0] = res.getString(1);
+                        }
+                        data[1] = textPublisherName.getText();
+                        data[2] = textPublisherCountry.getText();
                         tableModelPublishers.insertRow(0, data);
                         stt.close();
                         conn.close();
@@ -450,7 +467,7 @@ public class Dashboard extends javax.swing.JFrame {
                 }
                 break;
             case 3:
-                data = new String[6];
+                data = new String[7];
                 if ((textGameTitle.getText().isEmpty()) || (textGenre.getText().isEmpty()) || (comboBoxStudio.getSelectedIndex() == -1) || (comboBoxPublisher.getSelectedIndex() == -1) || (textReleaseDate.getText().isEmpty()) || (textPrice.getText().isEmpty())) {
                     JOptionPane.showMessageDialog(null, "Data can't be empty");
                 } else {
@@ -470,16 +487,120 @@ public class Dashboard extends javax.swing.JFrame {
                                 + Double.parseDouble(textPrice.getText())
                                 + ")";
                         stt.executeUpdate(SQL);
-                        data[0] = textGameTitle.getText();
-                        data[1] = textGenre.getText();
-                        data[2] = si.studioName;
-                        data[3] = pi.publisherName;
-                        data[4] = textReleaseDate.getText();
-                        data[5] = textPrice.getText();
+                        String SQL2 = "SELECT gameID FROM games WHERE gameID=(SELECT max(gameID) FROM games)";
+                        ResultSet res = stt.executeQuery(SQL2);
+                        while (res.next()) {
+                            data[0] = res.getString(1);
+                        }
+                        data[1] = textGameTitle.getText();
+                        data[2] = textGenre.getText();
+                        data[3] = si.studioName;
+                        data[4] = pi.publisherName;
+                        data[5] = textReleaseDate.getText();
+                        data[6] = textPrice.getText();
                         tableModelGames.insertRow(0, data);
                         stt.close();
                         conn.close();
                         resetForm(3);
+                        tabbedPane.setSelectedComponent(Games);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                break;
+        }
+    }
+
+    public void update(int n, int row) {
+        String data[];
+        switch (n) {
+            case 1:
+                data = new String[4];
+                if ((textEditStudioName.getText().isEmpty()) || (textEditDirector.getText().isEmpty()) || (textEditStudioCountry.getText().isEmpty())) {
+                    JOptionPane.showMessageDialog(null, "Data can't be empty");
+                } else {
+                    try {
+                        Class.forName(driver);
+                        Connection conn = DriverManager.getConnection(database, user, pass);
+                        Statement stt = conn.createStatement();
+                        String SQL = "UPDATE studios SET "
+                                + "studio_name='" + textEditStudioName.getText() + "', "
+                                + "director='" + textEditDirector.getText() + "', "
+                                + "studio_country='" + textEditStudioCountry.getText() + "' "
+                                + "WHERE studioID=" + textEditStudioID.getText();
+                        stt.executeUpdate(SQL);
+                        data[0] = textEditStudioID.getText();
+                        data[1] = textEditStudioName.getText();
+                        data[2] = textEditDirector.getText();
+                        data[3] = textEditStudioCountry.getText();
+                        tableModelStudios.removeRow(row);
+                        tableModelStudios.insertRow(0, data);
+                        stt.close();
+                        conn.close();
+                        tabbedPane.setSelectedComponent(Studios);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                break;
+            case 2:
+                data = new String[3];
+                if ((textEditPublisherName.getText().isEmpty()) || (textEditPublisherCountry.getText().isEmpty())) {
+                    JOptionPane.showMessageDialog(null, "Data can't be empty");
+                } else {
+                    try {
+                        Class.forName(driver);
+                        Connection conn = DriverManager.getConnection(database, user, pass);
+                        Statement stt = conn.createStatement();
+                        String SQL = "UPDATE publishers SET "
+                                + "publisher_name='" + textEditPublisherName.getText() + "', "
+                                + "publisher_country='" + textEditPublisherCountry.getText() + "' "
+                                + "WHERE publisherID=" + textEditPublisherID.getText();
+                        stt.executeUpdate(SQL);
+                        data[0] = textEditPublisherID.getText();
+                        data[1] = textEditPublisherName.getText();
+                        data[2] = textEditPublisherCountry.getText();
+                        tableModelPublishers.removeRow(row);
+                        tableModelPublishers.insertRow(0, data);
+                        stt.close();
+                        conn.close();
+                        tabbedPane.setSelectedComponent(Publishers);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                break;
+            case 3:
+                data = new String[7];
+                if ((textEditGameTitle.getText().isEmpty()) || (textEditGenre.getText().isEmpty()) || (comboBoxEditStudio.getSelectedIndex() == -1) || (comboBoxEditPublisher.getSelectedIndex() == -1) || (textEditReleaseDate.getText().isEmpty()) || (textEditPrice.getText().isEmpty())) {
+                    JOptionPane.showMessageDialog(null, "Data can't be empty");
+                } else {
+                    try {
+                        Class.forName(driver);
+                        Connection conn = DriverManager.getConnection(database, user, pass);
+                        Statement stt = conn.createStatement();
+                        StudioItem si = (StudioItem) comboBoxEditStudio.getSelectedItem();
+                        PublisherItem pi = (PublisherItem) comboBoxEditPublisher.getSelectedItem();
+                        String SQL = "UPDATE games SET "
+                                + "game_title='" + textEditGameTitle.getText() + "', "
+                                + "genre='" + textEditGenre.getText() + "', "
+                                + "studioID=" + si.studioID + ", "
+                                + "publisherID=" + pi.publisherID + ", "
+                                + "release_date='" + textEditReleaseDate.getText() + "', "
+                                + "price=" + Double.parseDouble(textEditPrice.getText()) + " "
+                                + "WHERE gameID=" + textEditGameID.getText();
+                        stt.executeUpdate(SQL);
+                        data[0] = textEditGameID.getText();
+                        data[1] = textEditGameTitle.getText();
+                        data[2] = textEditGenre.getText();
+                        data[3] = si.studioName;
+                        data[4] = pi.publisherName;
+                        data[5] = textEditReleaseDate.getText();
+                        data[6] = textEditPrice.getText();
+                        tableModelGames.removeRow(row);
+                        tableModelGames.insertRow(0, data);
+                        stt.close();
+                        conn.close();
                         tabbedPane.setSelectedComponent(Games);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -511,7 +632,6 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
-    // Add item to Combo Box with name but insert with ID
     public class StudioItem {
 
         int studioID;
@@ -545,6 +665,7 @@ public class Dashboard extends javax.swing.JFrame {
                 comboBoxStudio.addItem(si = new StudioItem(res.getInt(1), res.getString(2)));
                 comboBoxEditStudio.addItem(si = new StudioItem(res.getInt(1), res.getString(2)));
             }
+            comboBoxStudio.setSelectedIndex(-1);
             res.close();
             stt.close();
             conn.close();
@@ -588,6 +709,7 @@ public class Dashboard extends javax.swing.JFrame {
                 comboBoxPublisher.addItem(pi = new PublisherItem(res.getInt(1), res.getString(2)));
                 comboBoxEditPublisher.addItem(pi = new PublisherItem(res.getInt(1), res.getString(2)));
             }
+            comboBoxPublisher.setSelectedIndex(-1);
             res.close();
             stt.close();
             conn.close();
@@ -598,7 +720,7 @@ public class Dashboard extends javax.swing.JFrame {
         }
     }
 
-    public void deleteRow(int n) {
+    public void delete(int n) {
         try {
             int row;
             Class.forName(driver);
@@ -648,7 +770,7 @@ public class Dashboard extends javax.swing.JFrame {
                     break;
             }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.DEFAULT_OPTION);
         }
     }
 
@@ -2044,13 +2166,17 @@ public class Dashboard extends javax.swing.JFrame {
         );
 
         buttonUpdateEditStudios.setBackground(new java.awt.Color(0, 96, 213));
-        buttonUpdateEditStudios.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonUpdateEditStudios.setText("UPDATE");
         buttonUpdateEditStudios.setBorderColor(new java.awt.Color(0, 96, 213));
         buttonUpdateEditStudios.setColor(new java.awt.Color(0, 96, 213));
         buttonUpdateEditStudios.setColorClick(new java.awt.Color(0, 76, 193));
         buttonUpdateEditStudios.setColorOver(new java.awt.Color(40, 136, 253));
         buttonUpdateEditStudios.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonUpdateEditStudios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonUpdateEditStudiosMouseClicked(evt);
+            }
+        });
 
         buttonResetEdiStudios.setBackground(new java.awt.Color(39, 59, 75));
         buttonResetEdiStudios.setForeground(new java.awt.Color(103, 193, 245));
@@ -2060,6 +2186,11 @@ public class Dashboard extends javax.swing.JFrame {
         buttonResetEdiStudios.setColorClick(new java.awt.Color(19, 39, 55));
         buttonResetEdiStudios.setColorOver(new java.awt.Color(79, 99, 115));
         buttonResetEdiStudios.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonResetEdiStudios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonResetEdiStudiosMouseClicked(evt);
+            }
+        });
 
         textEditStudioID.setPreferredSize(new java.awt.Dimension(300, 30));
 
@@ -2070,13 +2201,15 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(EditStudiosLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addGroup(EditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textEditStudioID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelEditStudios)
-                    .addComponent(panelEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(EditStudiosLayout.createSequentialGroup()
-                        .addComponent(buttonUpdateEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonResetEdiStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(EditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, EditStudiosLayout.createSequentialGroup()
+                            .addComponent(buttonUpdateEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(buttonResetEdiStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textEditStudioID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(panelEditStudios, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(100, 100, 100))
         );
         EditStudiosLayout.setVerticalGroup(
@@ -2084,14 +2217,13 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(EditStudiosLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(labelEditStudios)
-                .addGap(48, 48, 48)
-                .addComponent(textEditStudioID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(95, 95, 95)
                 .addComponent(panelEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(EditStudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonResetEdiStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonUpdateEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonUpdateEditStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textEditStudioID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(316, Short.MAX_VALUE))
         );
 
@@ -2145,13 +2277,17 @@ public class Dashboard extends javax.swing.JFrame {
         );
 
         buttonUpdateEditPublishers.setBackground(new java.awt.Color(0, 96, 213));
-        buttonUpdateEditPublishers.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonUpdateEditPublishers.setText("UPDATE");
         buttonUpdateEditPublishers.setBorderColor(new java.awt.Color(0, 96, 213));
         buttonUpdateEditPublishers.setColor(new java.awt.Color(0, 96, 213));
         buttonUpdateEditPublishers.setColorClick(new java.awt.Color(0, 76, 193));
         buttonUpdateEditPublishers.setColorOver(new java.awt.Color(40, 136, 253));
         buttonUpdateEditPublishers.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonUpdateEditPublishers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonUpdateEditPublishersMouseClicked(evt);
+            }
+        });
 
         buttonResetEditPublishers.setBackground(new java.awt.Color(39, 59, 75));
         buttonResetEditPublishers.setForeground(new java.awt.Color(103, 193, 245));
@@ -2161,6 +2297,11 @@ public class Dashboard extends javax.swing.JFrame {
         buttonResetEditPublishers.setColorClick(new java.awt.Color(19, 39, 55));
         buttonResetEditPublishers.setColorOver(new java.awt.Color(79, 99, 115));
         buttonResetEditPublishers.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonResetEditPublishers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonResetEditPublishersMouseClicked(evt);
+            }
+        });
 
         textEditPublisherID.setPreferredSize(new java.awt.Dimension(300, 30));
 
@@ -2171,13 +2312,15 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(EditPublishersLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addGroup(EditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textEditPublisherID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(EditPublishersLayout.createSequentialGroup()
-                        .addComponent(buttonUpdateEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonResetEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(labelEditPublishers))
+                    .addComponent(labelEditPublishers)
+                    .addGroup(EditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, EditPublishersLayout.createSequentialGroup()
+                            .addComponent(buttonUpdateEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(buttonResetEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textEditPublisherID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(panelEditPublishers, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(100, 100, 100))
         );
         EditPublishersLayout.setVerticalGroup(
@@ -2185,14 +2328,13 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(EditPublishersLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(labelEditPublishers)
-                .addGap(48, 48, 48)
-                .addComponent(textEditPublisherID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(95, 95, 95)
                 .addComponent(panelEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(EditPublishersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonResetEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonUpdateEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonUpdateEditPublishers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textEditPublisherID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(316, Short.MAX_VALUE))
         );
 
@@ -2315,13 +2457,17 @@ public class Dashboard extends javax.swing.JFrame {
         );
 
         buttonUpdateEditGames.setBackground(new java.awt.Color(0, 96, 213));
-        buttonUpdateEditGames.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonUpdateEditGames.setText("UPDATE");
         buttonUpdateEditGames.setBorderColor(new java.awt.Color(0, 96, 213));
         buttonUpdateEditGames.setColor(new java.awt.Color(0, 96, 213));
         buttonUpdateEditGames.setColorClick(new java.awt.Color(0, 76, 193));
         buttonUpdateEditGames.setColorOver(new java.awt.Color(40, 136, 253));
         buttonUpdateEditGames.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonUpdateEditGames.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonUpdateEditGamesMouseClicked(evt);
+            }
+        });
 
         buttonResetEditGames.setBackground(new java.awt.Color(39, 59, 75));
         buttonResetEditGames.setForeground(new java.awt.Color(103, 193, 245));
@@ -2331,6 +2477,11 @@ public class Dashboard extends javax.swing.JFrame {
         buttonResetEditGames.setColorClick(new java.awt.Color(19, 39, 55));
         buttonResetEditGames.setColorOver(new java.awt.Color(79, 99, 115));
         buttonResetEditGames.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonResetEditGames.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonResetEditGamesMouseClicked(evt);
+            }
+        });
 
         textEditGameID.setPreferredSize(new java.awt.Dimension(300, 30));
 
@@ -2341,13 +2492,15 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(EditGamesLayout.createSequentialGroup()
                 .addGap(100, 100, 100)
                 .addGroup(EditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textEditGameID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelEditGames)
-                    .addGroup(EditGamesLayout.createSequentialGroup()
-                        .addComponent(buttonUpdateEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonResetEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(EditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(panelEditGames, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(EditGamesLayout.createSequentialGroup()
+                            .addComponent(buttonUpdateEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(buttonResetEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textEditGameID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(91, Short.MAX_VALUE))
         );
         EditGamesLayout.setVerticalGroup(
@@ -2355,15 +2508,14 @@ public class Dashboard extends javax.swing.JFrame {
             .addGroup(EditGamesLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(labelEditGames)
-                .addGap(47, 47, 47)
-                .addComponent(textEditGameID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(95, 95, 95)
                 .addComponent(panelEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(EditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonResetEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonUpdateEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(230, Short.MAX_VALUE))
+                    .addComponent(buttonUpdateEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textEditGameID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(229, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab8", EditGames);
@@ -2405,23 +2557,23 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonTransactionsMouseClicked
 
     private void buttonSearchStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchStudiosMouseClicked
-        setTableSearch(1);
+        search(1);
     }//GEN-LAST:event_buttonSearchStudiosMouseClicked
 
     private void buttonSearchPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchPublishersMouseClicked
-        setTableSearch(2);
+        search(2);
     }//GEN-LAST:event_buttonSearchPublishersMouseClicked
 
     private void buttonSearchGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchGamesMouseClicked
-        setTableSearch(3);
+        search(3);
     }//GEN-LAST:event_buttonSearchGamesMouseClicked
 
     private void buttonSearchUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchUsersMouseClicked
-        setTableSearch(4);
+        search(4);
     }//GEN-LAST:event_buttonSearchUsersMouseClicked
 
     private void buttonSearchTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSearchTransactionsMouseClicked
-        setTableSearch(5);
+        search(5);
     }//GEN-LAST:event_buttonSearchTransactionsMouseClicked
 
     private void buttonAddStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAddStudiosMouseClicked
@@ -2439,7 +2591,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAddGamesMouseClicked
 
     private void buttonSubmitCreateStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSubmitCreateStudiosMouseClicked
-        insertIntoTable(1);
+        insert(1);
     }//GEN-LAST:event_buttonSubmitCreateStudiosMouseClicked
 
     private void buttonResetCreateStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetCreateStudiosMouseClicked
@@ -2447,7 +2599,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonResetCreateStudiosMouseClicked
 
     private void buttonSubmitCreatePublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSubmitCreatePublishersMouseClicked
-        insertIntoTable(2);
+        insert(2);
     }//GEN-LAST:event_buttonSubmitCreatePublishersMouseClicked
 
     private void buttonResetCreatePublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetCreatePublishersMouseClicked
@@ -2455,7 +2607,7 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonResetCreatePublishersMouseClicked
 
     private void buttonSubmitCreateGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSubmitCreateGamesMouseClicked
-        insertIntoTable(3);
+        insert(3);
     }//GEN-LAST:event_buttonSubmitCreateGamesMouseClicked
 
     private void buttonResetCreateGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetCreateGamesMouseClicked
@@ -2467,23 +2619,23 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonReleaseDateMouseClicked
 
     private void buttonDeleteStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteStudiosMouseClicked
-        deleteRow(1);
+        delete(1);
     }//GEN-LAST:event_buttonDeleteStudiosMouseClicked
 
     private void buttonDeletePublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeletePublishersMouseClicked
-        deleteRow(2);
+        delete(2);
     }//GEN-LAST:event_buttonDeletePublishersMouseClicked
 
     private void buttonDeleteGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteGamesMouseClicked
-        deleteRow(3);
+        delete(3);
     }//GEN-LAST:event_buttonDeleteGamesMouseClicked
 
     private void buttonDeleteUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteUsersMouseClicked
-        deleteRow(4);
+        delete(4);
     }//GEN-LAST:event_buttonDeleteUsersMouseClicked
 
     private void buttonDeleteTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonDeleteTransactionsMouseClicked
-        deleteRow(5);
+        delete(5);
     }//GEN-LAST:event_buttonDeleteTransactionsMouseClicked
 
     private void buttonEditStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditStudiosMouseClicked
@@ -2502,6 +2654,36 @@ public class Dashboard extends javax.swing.JFrame {
         loadPublisher();
         rowToInput(3);
     }//GEN-LAST:event_buttonEditGamesMouseClicked
+
+    private void buttonResetEdiStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEdiStudiosMouseClicked
+        rowToInput(1);
+    }//GEN-LAST:event_buttonResetEdiStudiosMouseClicked
+
+    private void buttonResetEditPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEditPublishersMouseClicked
+        rowToInput(2);
+    }//GEN-LAST:event_buttonResetEditPublishersMouseClicked
+
+    private void buttonResetEditGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEditGamesMouseClicked
+        rowToInput(3);
+    }//GEN-LAST:event_buttonResetEditGamesMouseClicked
+
+    private void buttonUpdateEditStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUpdateEditStudiosMouseClicked
+        int row;
+        row = tableStudios.getSelectedRow();
+        update(1, row);
+    }//GEN-LAST:event_buttonUpdateEditStudiosMouseClicked
+
+    private void buttonUpdateEditPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUpdateEditPublishersMouseClicked
+        int row;
+        row = tablePublishers.getSelectedRow();
+        update(2, row);
+    }//GEN-LAST:event_buttonUpdateEditPublishersMouseClicked
+
+    private void buttonUpdateEditGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUpdateEditGamesMouseClicked
+        int row;
+        row = tableGames.getSelectedRow();
+        update(3, row);
+    }//GEN-LAST:event_buttonUpdateEditGamesMouseClicked
 
     /**
      * @param args the command line arguments

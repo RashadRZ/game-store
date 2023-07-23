@@ -2300,13 +2300,16 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="textEditStudioID" min="-2" max="-2" attributes="0"/>
                           <Component id="labelEditStudios" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="panelEditStudios" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="buttonUpdateEditStudios" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="buttonResetEdiStudios" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="buttonUpdateEditStudios" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="buttonResetEdiStudios" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="textEditStudioID" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="panelEditStudios" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
@@ -2318,14 +2321,13 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="labelEditStudios" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                      <Component id="textEditStudioID" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
                       <Component id="panelEditStudios" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="buttonResetEdiStudios" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonUpdateEditStudios" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textEditStudioID" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="316" max="32767" attributes="0"/>
                   </Group>
@@ -2454,11 +2456,6 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d5" green="60" red="0" type="rgb"/>
                 </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder/>
-                  </Border>
-                </Property>
                 <Property name="text" type="java.lang.String" value="UPDATE"/>
                 <Property name="borderColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d5" green="60" red="0" type="rgb"/>
@@ -2476,6 +2473,9 @@
                   <Dimension value="[100, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonUpdateEditStudiosMouseClicked"/>
+              </Events>
             </Component>
             <Component class="ButtonRound" name="buttonResetEdiStudios">
               <Properties>
@@ -2502,6 +2502,9 @@
                   <Dimension value="[100, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonResetEdiStudiosMouseClicked"/>
+              </Events>
             </Component>
             <Component class="TextFieldRound" name="textEditStudioID">
               <Properties>
@@ -2532,14 +2535,17 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="textEditPublisherID" min="-2" max="-2" attributes="0"/>
-                          <Component id="panelEditPublishers" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="buttonUpdateEditPublishers" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="buttonResetEditPublishers" min="-2" max="-2" attributes="0"/>
-                          </Group>
                           <Component id="labelEditPublishers" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="buttonUpdateEditPublishers" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="buttonResetEditPublishers" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="textEditPublisherID" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="panelEditPublishers" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                   </Group>
@@ -2550,14 +2556,13 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="labelEditPublishers" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                      <Component id="textEditPublisherID" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
                       <Component id="panelEditPublishers" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="buttonResetEditPublishers" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonUpdateEditPublishers" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textEditPublisherID" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="316" max="32767" attributes="0"/>
                   </Group>
@@ -2658,11 +2663,6 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d5" green="60" red="0" type="rgb"/>
                 </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder/>
-                  </Border>
-                </Property>
                 <Property name="text" type="java.lang.String" value="UPDATE"/>
                 <Property name="borderColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d5" green="60" red="0" type="rgb"/>
@@ -2680,6 +2680,9 @@
                   <Dimension value="[100, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonUpdateEditPublishersMouseClicked"/>
+              </Events>
             </Component>
             <Component class="ButtonRound" name="buttonResetEditPublishers">
               <Properties>
@@ -2706,6 +2709,9 @@
                   <Dimension value="[100, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonResetEditPublishersMouseClicked"/>
+              </Events>
             </Component>
             <Component class="TextFieldRound" name="textEditPublisherID">
               <Properties>
@@ -2736,13 +2742,16 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="textEditGameID" min="-2" max="-2" attributes="0"/>
-                          <Component id="panelEditGames" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="labelEditGames" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="buttonUpdateEditGames" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="buttonResetEditGames" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="panelEditGames" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="buttonUpdateEditGames" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="buttonResetEditGames" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="textEditGameID" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace pref="91" max="32767" attributes="0"/>
@@ -2754,16 +2763,15 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="labelEditGames" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                      <Component id="textEditGameID" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
                       <Component id="panelEditGames" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="buttonResetEditGames" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="buttonUpdateEditGames" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textEditGameID" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="230" max="32767" attributes="0"/>
+                      <EmptySpace pref="229" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -3007,11 +3015,6 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d5" green="60" red="0" type="rgb"/>
                 </Property>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder/>
-                  </Border>
-                </Property>
                 <Property name="text" type="java.lang.String" value="UPDATE"/>
                 <Property name="borderColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="d5" green="60" red="0" type="rgb"/>
@@ -3029,6 +3032,9 @@
                   <Dimension value="[100, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonUpdateEditGamesMouseClicked"/>
+              </Events>
             </Component>
             <Component class="ButtonRound" name="buttonResetEditGames">
               <Properties>
@@ -3055,6 +3061,9 @@
                   <Dimension value="[100, 30]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonResetEditGamesMouseClicked"/>
+              </Events>
             </Component>
             <Component class="TextFieldRound" name="textEditGameID">
               <Properties>

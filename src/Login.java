@@ -8,11 +8,16 @@
  *
  * @author LENOVO
  */
+import java.awt.Color;
+import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
+
 public class Login extends javax.swing.JFrame {
 
     /**
@@ -21,11 +26,10 @@ public class Login extends javax.swing.JFrame {
     Connect dbsetting;
     String driver, database, user, pass;
     Object tableTablean;
-    
-    
+
     public Login() {
         initComponents();
-        
+
         dbsetting = new Connect();
         driver = dbsetting.SettingPanel("DBDriver");
         database = dbsetting.SettingPanel("DBDatabase");
@@ -363,7 +367,7 @@ public class Login extends javax.swing.JFrame {
 
         welcome.addTab("tab2", register);
 
-        getContentPane().add(welcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -50, 1280, 720));
+        getContentPane().add(welcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -50, 1300, 720));
 
         pack();
         setLocationRelativeTo(null);
@@ -371,58 +375,53 @@ public class Login extends javax.swing.JFrame {
 
     private void login_show_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_show_passwordActionPerformed
         // TODO add your handling code here:
-        if(login_show_password.isSelected()){
-            login_password.setEchoChar((char)0);
-        }
-        else{
+        if (login_show_password.isSelected()) {
+            login_password.setEchoChar((char) 0);
+        } else {
             login_password.setEchoChar('*');
         }
     }//GEN-LAST:event_login_show_passwordActionPerformed
 
     private void btn_loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loginActionPerformed
         // TODO add your handling code here:
-         try{
+        try {
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(database, user, pass);
-            
+
             String email = login_email.getText();
             String password = login_password.getText();
-            
+
             Statement stt = conn.createStatement();
-            String SQL = "select * from users where email='"+email+"' and name='"+password+"'";
+            String SQL = "select * from users where email='" + email + "' and name='" + password + "'";
             ResultSet res = stt.executeQuery(SQL);
-            
-            if(res.next()){
+
+            if (res.next()) {
                 // Jika email dan password user benar, pindah ke halaman user
                 Dashboard dashboard = new Dashboard();
                 dashboard.setVisible(true);
 
                 this.setVisible(false);
-            }
-            else if(login_email.getText().equals("")){
+            } else if (login_email.getText().equals("")) {
                 // Jika Email kosong, tampilkan pesan
                 JOptionPane.showMessageDialog(null, "Please fill out username");
-            }
-            else if(login_password.getText().equals("")){
+            } else if (login_password.getText().equals("")) {
                 // Jika password kosong, tampilkan pesan
                 JOptionPane.showMessageDialog(null, "Please fill out password");
-            }
-            else if(login_email.getText().contains("admin@gmail.com")&& login_password.getText().contains("Admin")){
-               // Login untuk admin
+            } else if (login_email.getText().contains("admin@gmail.com") && login_password.getText().contains("Admin")) {
+                // Login untuk admin
                 Dashboard dashboard = new Dashboard();
                 dashboard.setVisible(true);
 
                 this.setVisible(false);
-            }
-            else{
+            } else {
                 // Jika email dan password salah
                 JOptionPane.showMessageDialog(null, "Wrong username or password!",
-                    "Message",JOptionPane.ERROR_MESSAGE);
+                        "Message", JOptionPane.ERROR_MESSAGE);
             }
             conn.close();
-         }catch(Exception e){
-             System.out.println(e.getMessage());
-         }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }//GEN-LAST:event_btn_loginActionPerformed
 
     private void txt_register_accActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_register_accActionPerformed
@@ -432,13 +431,12 @@ public class Login extends javax.swing.JFrame {
 
     private void register_show_passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_show_passwordActionPerformed
         // TODO add your handling code here:
-        if(register_show_password.isSelected()){
-            register_password.setEchoChar((char)0);
-        }
-        else{
+        if (register_show_password.isSelected()) {
+            register_password.setEchoChar((char) 0);
+        } else {
             register_password.setEchoChar('*');
         }
-        
+
     }//GEN-LAST:event_register_show_passwordActionPerformed
 
     private void txt_login_accActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_login_accActionPerformed
@@ -448,55 +446,52 @@ public class Login extends javax.swing.JFrame {
 
     private void btn_registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_registerActionPerformed
         // TODO add your handling code here:
+
         String data[] = new String[3];
-        try{
+        try {
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(database, user, pass);
-            
+
             String email = register_email.getText();
             String password = register_password.getText();
-            String gender= "";
-            
+            String gender = "";
+
             Statement stt = conn.createStatement();
-            if(radio_male.isSelected()){
+            if (radio_male.isSelected()) {
                 gender = "male";
                 System.out.println(gender);
-            }
-            else if(radio_female.isSelected()){
+            } else if (radio_female.isSelected()) {
                 gender = "female";
                 System.out.println(gender);
-            }
-            else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Please select your gender");
             }
             String SQL = "INSERT INTO users (name, "
-                        + "email, gender) "
-                        + "VALUES "
-                        + "('"+ password +"', "
-                        +"'"+ email +"', "
-                        +"'"+ gender +"')";
+                    + "email, gender) "
+                    + "VALUES "
+                    + "('" + password + "', "
+                    + "'" + email + "', "
+                    + "'" + gender + "')";
             stt.executeUpdate(SQL);
-            String SQL2 = "SELECT * FROM users WHERE name='"+ password +"'";
+            String SQL2 = "SELECT * FROM users WHERE name='" + password + "'";
             ResultSet res = stt.executeQuery(SQL2);
-            
-            if(res.next()){
-                JOptionPane.showMessageDialog(null, "Data has been saved","Saved",JOptionPane.INFORMATION_MESSAGE);
-            }
-            else if(register_email.getText().equals("")){
+
+            if (res.next()) {
+                JOptionPane.showMessageDialog(null, "Data has been saved", "Saved", JOptionPane.INFORMATION_MESSAGE);
+            } else if (register_email.getText().equals("")) {
                 // Jika Email kosong, tampilkan pesan
                 JOptionPane.showMessageDialog(null, "Please fill out username");
-            }
-            else if(register_password.getText().equals("")){
+            } else if (register_password.getText().equals("")) {
                 // Jika password kosong, tampilkan pesan
                 JOptionPane.showMessageDialog(null, "Please fill out password");
             }
-            
+
             conn.close();
             stt.close();
 
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null,e.getMessage(),
-                        "Error",JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(),
+                    "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btn_registerActionPerformed
 

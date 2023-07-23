@@ -1,9 +1,23 @@
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.SystemColor;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author lenovo
@@ -15,6 +29,38 @@ public class test extends javax.swing.JFrame {
      */
     public test() {
         initComponents();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 778, 426);
+        getContentPane().setLayout(null);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(10, 101, 742, 276);
+        getContentPane().add(scrollPane);
+
+        JPanel borderlaoutpanel = new JPanel();
+        scrollPane.setViewportView(borderlaoutpanel);
+        borderlaoutpanel.setLayout(new BorderLayout(0, 0));
+
+        JPanel columnpanel = new JPanel();
+        borderlaoutpanel.add(columnpanel, BorderLayout.NORTH);
+        columnpanel.setLayout(new GridLayout(0, 1, 0, 1));
+        columnpanel.setBackground(Color.gray);
+
+        for (int i = 0; i < 32; i++) {
+            
+            JPanel rowPanel = new JPanel();
+            rowPanel.setPreferredSize(new Dimension(300, 200));
+            columnpanel.add(rowPanel);
+            rowPanel.setLayout(null);
+
+            JButton button = new JButton("New button");
+            button.setBounds(20, 5, 89, 23);
+            rowPanel.add(button);
+
+            if (i % 2 == 0) {
+                rowPanel.setBackground(SystemColor.inactiveCaptionBorder);
+            }
+        }
     }
 
     /**
@@ -27,132 +73,22 @@ public class test extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        radioMale = new javax.swing.JRadioButton();
-        radioFemale = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
-        text1 = new javax.swing.JTextField();
-        comboBox = new javax.swing.JComboBox();
-        jButton2 = new javax.swing.JButton();
-        text2 = new javax.swing.JTextField();
-        addItemButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        buttonGroup1.add(radioMale);
-        radioMale.setText("Male");
-        radioMale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioMaleActionPerformed(evt);
-            }
-        });
-
-        buttonGroup1.add(radioFemale);
-        radioFemale.setText("Female");
-
-        jButton1.setText("Get gender");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        comboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jButton2.setText("Get Item");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        text2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                text2ActionPerformed(evt);
-            }
-        });
-
-        addItemButton.setText("Add Item");
-        addItemButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addItemButtonActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(radioMale)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(radioFemale)
-                            .addComponent(text1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-                            .addComponent(text2)))
-                    .addComponent(addItemButton))
-                .addContainerGap(90, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioMale)
-                    .addComponent(radioFemale))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(text1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(82, 82, 82)
-                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(text2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
-                .addComponent(addItemButton)
-                .addContainerGap(34, Short.MAX_VALUE))
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String gender = "";
-        if(radioMale.isSelected()){
-            gender = "male";
-        }
-        else if(radioFemale.isSelected()){
-            gender = "female";
-        }
-        
-        text1.setText(gender);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void radioMaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioMaleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_radioMaleActionPerformed
-
-    private void text2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_text2ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String selected = comboBox.getSelectedItem().toString();
-        text2.setText(selected);
-
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void addItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemButtonActionPerformed
-        comboBox.addItem("Aku");
-    }//GEN-LAST:event_addItemButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,14 +126,6 @@ public class test extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addItemButton;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox comboBox;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JRadioButton radioFemale;
-    private javax.swing.JRadioButton radioMale;
-    private javax.swing.JTextField text1;
-    private javax.swing.JTextField text2;
     // End of variables declaration//GEN-END:variables
 }
