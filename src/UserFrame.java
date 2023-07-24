@@ -255,7 +255,7 @@ public class UserFrame extends javax.swing.JFrame {
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
                 String gameID = res.getString(1);
-                String game_title = res.getString(2);
+                String game_title =  res.getString(2);
                 
                 JPanel rowPanel = new JPanel();
                 rowPanel.setPreferredSize(new Dimension(400, 200));
@@ -584,6 +584,7 @@ public class UserFrame extends javax.swing.JFrame {
         textSearchMyGames.setBackground(new java.awt.Color(51, 51, 51));
         textSearchMyGames.setForeground(new java.awt.Color(255, 255, 255));
         textSearchMyGames.setText("Search...");
+        textSearchMyGames.setCaretColor(new java.awt.Color(250, 250, 250));
         textSearchMyGames.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         textSearchMyGames.setPreferredSize(new java.awt.Dimension(300, 30));
         textSearchMyGames.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -654,6 +655,7 @@ public class UserFrame extends javax.swing.JFrame {
         textSearchStore.setBackground(new java.awt.Color(51, 51, 51));
         textSearchStore.setForeground(new java.awt.Color(255, 255, 255));
         textSearchStore.setText("Search...");
+        textSearchStore.setCaretColor(new java.awt.Color(250, 250, 250));
         textSearchStore.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         textSearchStore.setPreferredSize(new java.awt.Dimension(300, 30));
         textSearchStore.addMouseListener(new java.awt.event.MouseAdapter() {

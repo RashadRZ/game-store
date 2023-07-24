@@ -39,6 +39,7 @@ public class Login extends javax.swing.JFrame {
         UI.put("Panel.background", new ColorUIResource(40, 46, 57));
         UI.put("OptionPane.background", new ColorUIResource(40, 46, 57));
         UI.put("OptionPane.messageForeground", Color.white);
+        textLoginEmail.requestFocus();
     }
 
     /**
@@ -376,6 +377,7 @@ public class Login extends javax.swing.JFrame {
 
     private void buttonToRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonToRegisterActionPerformed
         tabbedPane.setSelectedComponent(Register);
+        textRegisterEmail.requestFocus();
     }//GEN-LAST:event_buttonToRegisterActionPerformed
 
     private void checkRegisterShowPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkRegisterShowPasswordActionPerformed

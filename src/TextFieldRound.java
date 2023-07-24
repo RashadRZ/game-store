@@ -66,14 +66,7 @@ public class TextFieldRound extends JTextField {
         setFont(new Font("Arial", Font.PLAIN, 14));
         setBorder(new EmptyBorder(6, 10, 6, 10));
         setOpaque(false);
-        setCaretColor(new Color(255, 255, 255));
-
-//        addMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mousePressed(MouseEvent me) {
-//                setText("");
-//            }
-//        });
+        setCaretColor(new Color(0, 0, 0));
     }
 
     @Override

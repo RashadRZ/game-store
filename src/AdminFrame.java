@@ -513,9 +513,10 @@ public class AdminFrame extends javax.swing.JFrame {
         }
     }
 
-    public void editRow(int table) {
+    public void edit(int table) {
         try {
             int row;
+            int modelrow;
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(database, user, pass);
             Statement stt = conn.createStatement();
@@ -524,7 +525,9 @@ public class AdminFrame extends javax.swing.JFrame {
             switch (table) {
                 case 1:
                     row = tableStudios.getSelectedRow();
-                    SQL += "SELECT * FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
+                    modelrow = tableStudios.convertRowIndexToModel(row);
+                    String studioID = tableStudios.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "SELECT * FROM studios WHERE studioID='" + studioID + "'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         textEditStudioID.setText(res.getString(1));
@@ -538,7 +541,9 @@ public class AdminFrame extends javax.swing.JFrame {
                     break;
                 case 2:
                     row = tablePublishers.getSelectedRow();
-                    SQL += "SELECT * FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
+                    modelrow = tablePublishers.convertRowIndexToModel(row);
+                    String publisherID = tablePublishers.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "SELECT * FROM publishers WHERE publisherID='" + publisherID + "'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         textEditPublisherID.setText(res.getString(1));
@@ -551,7 +556,9 @@ public class AdminFrame extends javax.swing.JFrame {
                     break;
                 case 3:
                     row = tableGames.getSelectedRow();
-                    SQL += "SELECT * FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
+                    modelrow = tableGames.convertRowIndexToModel(row);
+                    String gameID = tableGames.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "SELECT * FROM games WHERE gameID='" + gameID + "'";
                     res = stt.executeQuery(SQL);
                     while (res.next()) {
                         textEditGameID.setText(res.getString(1));
@@ -674,6 +681,7 @@ public class AdminFrame extends javax.swing.JFrame {
     public void delete(int table) {
         try {
             int row;
+            int modelrow;
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(database, user, pass);
             Statement stt = conn.createStatement();
@@ -681,41 +689,51 @@ public class AdminFrame extends javax.swing.JFrame {
             switch (table) {
                 case 1:
                     row = tableStudios.getSelectedRow();
-                    SQL += "DELETE FROM studios WHERE studioID='" + tableModelStudios.getValueAt(row, 0) + "'";
+                    modelrow = tableStudios.convertRowIndexToModel(row);
+                    String studioID = tableStudios.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "DELETE FROM studios WHERE studioID='" + studioID + "'";
                     stt.executeUpdate(SQL);
-                    tableModelStudios.removeRow(row);
+                    tableModelStudios.removeRow(modelrow);
                     stt.close();
                     conn.close();
                     break;
                 case 2:
                     row = tablePublishers.getSelectedRow();
-                    SQL += "DELETE FROM publishers WHERE publisherID='" + tableModelPublishers.getValueAt(row, 0) + "'";
+                    modelrow = tablePublishers.convertRowIndexToModel(row);
+                    String publisherID = tablePublishers.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "DELETE FROM publishers WHERE publisherID='" + publisherID + "'";
                     stt.executeUpdate(SQL);
-                    tableModelPublishers.removeRow(row);
+                    tableModelPublishers.removeRow(modelrow);
                     stt.close();
                     conn.close();
                     break;
                 case 3:
                     row = tableGames.getSelectedRow();
-                    SQL += "DELETE FROM games WHERE gameID='" + tableModelGames.getValueAt(row, 0) + "'";
+                    modelrow = tableGames.convertRowIndexToModel(row);
+                    String gameID = tableGames.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "DELETE FROM games WHERE gameID='" + gameID + "'";
                     stt.executeUpdate(SQL);
-                    tableModelGames.removeRow(row);
+                    tableModelGames.removeRow(modelrow);
                     stt.close();
                     conn.close();
                     break;
                 case 4:
                     row = tableUsers.getSelectedRow();
-                    SQL += "DELETE FROM users WHERE userID='" + tableModelUsers.getValueAt(row, 0) + "'";
+                    modelrow = tableUsers.convertRowIndexToModel(row);
+                    String userID = tableUsers.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "DELETE FROM users WHERE userID='" + userID + "'";
                     stt.executeUpdate(SQL);
-                    tableModelUsers.removeRow(row);
+                    tableModelUsers.removeRow(modelrow);
                     stt.close();
                     conn.close();
                     break;
                 case 5:
                     row = tableTransactions.getSelectedRow();
-                    SQL += "DELETE FROM transactions WHERE transactionID='" + tableModelTransactions.getValueAt(row, 0) + "'";
+                    modelrow = tableTransactions.convertRowIndexToModel(row);
+                    String transactionID = tableTransactions.getModel().getValueAt(modelrow, 0).toString();
+                    SQL += "DELETE FROM transactions WHERE transactionID='" + transactionID + "'";
                     stt.executeUpdate(SQL);
-                    tableModelTransactions.removeRow(row);
+                    tableModelTransactions.removeRow(modelrow);
                     stt.close();
                     conn.close();
                     break;
@@ -1141,8 +1159,14 @@ public class AdminFrame extends javax.swing.JFrame {
         textSearchStudios.setBackground(new java.awt.Color(51, 51, 51));
         textSearchStudios.setForeground(new java.awt.Color(255, 255, 255));
         textSearchStudios.setText("Search...");
+        textSearchStudios.setCaretColor(new java.awt.Color(250, 250, 250));
         textSearchStudios.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         textSearchStudios.setPreferredSize(new java.awt.Dimension(300, 30));
+        textSearchStudios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textSearchStudiosMouseClicked(evt);
+            }
+        });
 
         buttonAddStudios.setText("ADD");
         buttonAddStudios.setBorderColor(new java.awt.Color(111, 166, 32));
@@ -1243,17 +1267,16 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addComponent(labelStudios)
                 .addGap(50, 50, 50)
                 .addGroup(StudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(StudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(buttonAddStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(textSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(buttonSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
+                    .addComponent(buttonAddStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(scrollPaneStudios, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(StudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonDeleteStudios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonEditStudios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(131, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab1", Studios);
@@ -1268,8 +1291,14 @@ public class AdminFrame extends javax.swing.JFrame {
         textSearchPublishers.setBackground(new java.awt.Color(51, 51, 51));
         textSearchPublishers.setForeground(new java.awt.Color(255, 255, 255));
         textSearchPublishers.setText("Search...");
+        textSearchPublishers.setCaretColor(new java.awt.Color(250, 250, 250));
         textSearchPublishers.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         textSearchPublishers.setPreferredSize(new java.awt.Dimension(300, 30));
+        textSearchPublishers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textSearchPublishersMouseClicked(evt);
+            }
+        });
 
         buttonAddPublishers.setText("ADD");
         buttonAddPublishers.setBorderColor(new java.awt.Color(111, 166, 32));
@@ -1395,8 +1424,14 @@ public class AdminFrame extends javax.swing.JFrame {
         textSearchGames.setBackground(new java.awt.Color(51, 51, 51));
         textSearchGames.setForeground(new java.awt.Color(255, 255, 255));
         textSearchGames.setText("Search...");
+        textSearchGames.setCaretColor(new java.awt.Color(250, 250, 250));
         textSearchGames.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         textSearchGames.setPreferredSize(new java.awt.Dimension(300, 30));
+        textSearchGames.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textSearchGamesMouseClicked(evt);
+            }
+        });
 
         buttonAddGames.setText("ADD");
         buttonAddGames.setBorderColor(new java.awt.Color(111, 166, 32));
@@ -1521,8 +1556,14 @@ public class AdminFrame extends javax.swing.JFrame {
         textSearchUsers.setBackground(new java.awt.Color(51, 51, 51));
         textSearchUsers.setForeground(new java.awt.Color(255, 255, 255));
         textSearchUsers.setText("Search...");
+        textSearchUsers.setCaretColor(new java.awt.Color(250, 250, 250));
         textSearchUsers.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         textSearchUsers.setPreferredSize(new java.awt.Dimension(300, 30));
+        textSearchUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textSearchUsersMouseClicked(evt);
+            }
+        });
 
         scrollPaneUsers.setBackground(new java.awt.Color(31, 39, 51));
         scrollPaneUsers.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -1623,8 +1664,14 @@ public class AdminFrame extends javax.swing.JFrame {
         textSearchTransactions.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10));
         textSearchTransactions.setForeground(new java.awt.Color(255, 255, 255));
         textSearchTransactions.setText("Search...");
+        textSearchTransactions.setCaretColor(new java.awt.Color(250, 250, 250));
         textSearchTransactions.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         textSearchTransactions.setPreferredSize(new java.awt.Dimension(300, 30));
+        textSearchTransactions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                textSearchTransactionsMouseClicked(evt);
+            }
+        });
 
         scrollPaneTransactions.setBackground(new java.awt.Color(31, 39, 51));
         scrollPaneTransactions.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -1722,7 +1769,6 @@ public class AdminFrame extends javax.swing.JFrame {
         labelStudioName.setForeground(new java.awt.Color(4, 175, 244));
         labelStudioName.setText("Studio Name");
 
-        textStudioName.setCaretColor(new java.awt.Color(4, 175, 244));
         textStudioName.setPreferredSize(new java.awt.Dimension(300, 30));
 
         labelDirector.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -2119,7 +2165,6 @@ public class AdminFrame extends javax.swing.JFrame {
         labelEditStudioName.setForeground(new java.awt.Color(4, 175, 244));
         labelEditStudioName.setText("Studio Name");
 
-        textEditStudioName.setCaretColor(new java.awt.Color(4, 175, 244));
         textEditStudioName.setPreferredSize(new java.awt.Dimension(300, 30));
 
         labelEditDirector.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -2582,14 +2627,17 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void buttonAddStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAddStudiosMouseClicked
         tabbedPane.setSelectedComponent(CreateStudios);
+        textStudioName.requestFocus();
     }//GEN-LAST:event_buttonAddStudiosMouseClicked
 
     private void buttonAddPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAddPublishersMouseClicked
         tabbedPane.setSelectedComponent(CreatePublishers);
+        textPublisherName.requestFocus();
     }//GEN-LAST:event_buttonAddPublishersMouseClicked
 
     private void buttonAddGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAddGamesMouseClicked
         tabbedPane.setSelectedComponent(CreateGames);
+        textGameTitle.requestFocus();
         loadStudio();
         loadPublisher();
     }//GEN-LAST:event_buttonAddGamesMouseClicked
@@ -2644,31 +2692,34 @@ public class AdminFrame extends javax.swing.JFrame {
 
     private void buttonEditStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditStudiosMouseClicked
         tabbedPane.setSelectedComponent(EditStudios);
-        editRow(1);
+        edit(1);
+        textEditStudioName.requestFocus();
     }//GEN-LAST:event_buttonEditStudiosMouseClicked
 
     private void buttonEditPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditPublishersMouseClicked
         tabbedPane.setSelectedComponent(EditPublishers);
-        editRow(2);
+        edit(2);
+        textEditPublisherName.requestFocus();
     }//GEN-LAST:event_buttonEditPublishersMouseClicked
 
     private void buttonEditGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditGamesMouseClicked
         tabbedPane.setSelectedComponent(EditGames);
         loadStudio();
         loadPublisher();
-        editRow(3);
+        edit(3);
+        textEditGameTitle.requestFocus();
     }//GEN-LAST:event_buttonEditGamesMouseClicked
 
     private void buttonResetEdiStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEdiStudiosMouseClicked
-        editRow(1);
+        edit(1);
     }//GEN-LAST:event_buttonResetEdiStudiosMouseClicked
 
     private void buttonResetEditPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEditPublishersMouseClicked
-        editRow(2);
+        edit(2);
     }//GEN-LAST:event_buttonResetEditPublishersMouseClicked
 
     private void buttonResetEditGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonResetEditGamesMouseClicked
-        editRow(3);
+        edit(3);
     }//GEN-LAST:event_buttonResetEditGamesMouseClicked
 
     private void buttonUpdateEditStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUpdateEditStudiosMouseClicked
@@ -2688,6 +2739,26 @@ public class AdminFrame extends javax.swing.JFrame {
         row = tableGames.getSelectedRow();
         update(3, row);
     }//GEN-LAST:event_buttonUpdateEditGamesMouseClicked
+
+    private void textSearchStudiosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSearchStudiosMouseClicked
+        textSearchStudios.setText("");
+    }//GEN-LAST:event_textSearchStudiosMouseClicked
+
+    private void textSearchPublishersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSearchPublishersMouseClicked
+        textSearchPublishers.setText("");
+    }//GEN-LAST:event_textSearchPublishersMouseClicked
+
+    private void textSearchGamesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSearchGamesMouseClicked
+        textSearchGames.setText("");
+    }//GEN-LAST:event_textSearchGamesMouseClicked
+
+    private void textSearchUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSearchUsersMouseClicked
+        textSearchUsers.setText("");
+    }//GEN-LAST:event_textSearchUsersMouseClicked
+
+    private void textSearchTransactionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textSearchTransactionsMouseClicked
+        textSearchTransactions.setText("");
+    }//GEN-LAST:event_textSearchTransactionsMouseClicked
 
     /**
      * @param args the command line arguments
