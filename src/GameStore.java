@@ -14,8 +14,8 @@ public class GameStore {
         Login login = new Login();
         login.setVisible(true);
         
-//        Dashboard dashboard = new Dashboard();
-//        dashboard.setVisible(true);
+//        Dashboard adminframe = new Dashboard();
+//        adminframe.setVisible(true);
         
 //        UserFrame userframe = new UserFrame();
 //        userframe.setVisible(true);

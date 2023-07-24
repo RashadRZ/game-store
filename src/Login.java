@@ -8,11 +8,14 @@
  *
  * @author LENOVO
  */
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 public class Login extends javax.swing.JFrame {
 
@@ -31,6 +34,11 @@ public class Login extends javax.swing.JFrame {
         database = dbsetting.SettingPanel("DBDatabase");
         user = dbsetting.SettingPanel("DBUsername");
         pass = dbsetting.SettingPanel("DBPassword");
+        
+        UIManager UI = new UIManager();
+        UI.put("Panel.background", new ColorUIResource(40, 46, 57));
+        UI.put("OptionPane.background", new ColorUIResource(40, 46, 57));
+        UI.put("OptionPane.messageForeground", Color.white);
     }
 
     /**
@@ -42,9 +50,11 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Title = new javax.swing.JPanel();
+        labelTitle = new javax.swing.JLabel();
+        labelImage = new javax.swing.JLabel();
         tabbedPane = new javax.swing.JTabbedPane();
         Login = new javax.swing.JPanel();
-        pane_login = new javax.swing.JPanel();
         labelLogin = new javax.swing.JLabel();
         panelFormLogin = new PanelRound();
         labelLoginEmail = new javax.swing.JLabel();
@@ -55,10 +65,6 @@ public class Login extends javax.swing.JFrame {
         buttonToRegister = new ButtonRound();
         buttonLogin = new ButtonRound();
         Register = new javax.swing.JPanel();
-        pane_title1 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        pane_register = new javax.swing.JPanel();
         labelRegister = new javax.swing.JLabel();
         panelFormRegister = new PanelRound();
         labelRegisterEmail = new javax.swing.JLabel();
@@ -71,27 +77,33 @@ public class Login extends javax.swing.JFrame {
         radioGenderFemale = new javax.swing.JRadioButton();
         buttonToLogin = new ButtonRound();
         buttonRegister = new ButtonRound();
-        pane_title = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        Title.setBackground(new java.awt.Color(22, 25, 32));
+        Title.setPreferredSize(new java.awt.Dimension(640, 720));
+        Title.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        labelTitle.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
+        labelTitle.setForeground(new java.awt.Color(255, 255, 255));
+        labelTitle.setText("GAME STORE");
+        labelTitle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
+        Title.add(labelTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, 330, 50));
+
+        labelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GAME STORE COVER.png"))); // NOI18N
+        Title.add(labelImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 720));
+
+        getContentPane().add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         Login.setBackground(new java.awt.Color(22, 25, 32));
         Login.setPreferredSize(new java.awt.Dimension(1280, 720));
-
-        pane_login.setBackground(new java.awt.Color(22, 25, 32));
-        pane_login.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        pane_login.setPreferredSize(new java.awt.Dimension(640, 720));
-        pane_login.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelLogin.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         labelLogin.setForeground(new java.awt.Color(255, 255, 255));
         labelLogin.setText("LOGIN");
-        pane_login.add(labelLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(257, 144, -1, -1));
 
         labelLoginEmail.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelLoginEmail.setForeground(new java.awt.Color(4, 175, 244));
@@ -116,7 +128,7 @@ public class Login extends javax.swing.JFrame {
         panelFormLoginLayout.setHorizontalGroup(
             panelFormLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFormLoginLayout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addGap(40, 40, 40)
                 .addGroup(panelFormLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(checkLoginShowPassword)
                     .addGroup(panelFormLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -139,10 +151,8 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(textLoginPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(checkLoginShowPassword)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
-
-        pane_login.add(panelFormLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 234, -1, -1));
 
         buttonToRegister.setBackground(new java.awt.Color(22, 25, 32));
         buttonToRegister.setForeground(new java.awt.Color(103, 193, 245));
@@ -157,7 +167,6 @@ public class Login extends javax.swing.JFrame {
                 buttonToRegisterActionPerformed(evt);
             }
         });
-        pane_login.add(buttonToRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(404, 509, -1, -1));
 
         buttonLogin.setBackground(new java.awt.Color(0, 96, 213));
         buttonLogin.setText("LOGIN");
@@ -171,21 +180,38 @@ public class Login extends javax.swing.JFrame {
                 buttonLoginActionPerformed(evt);
             }
         });
-        pane_login.add(buttonLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(237, 571, 156, 51));
 
         javax.swing.GroupLayout LoginLayout = new javax.swing.GroupLayout(Login);
         Login.setLayout(LoginLayout);
         LoginLayout.setHorizontalGroup(
             LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginLayout.createSequentialGroup()
-                .addGap(640, 640, 640)
-                .addComponent(pane_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 86, Short.MAX_VALUE)
+                .addGroup(LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(LoginLayout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(labelLogin))
+                    .addComponent(panelFormLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(LoginLayout.createSequentialGroup()
+                        .addGap(322, 322, 322)
+                        .addComponent(buttonToRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(LoginLayout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addComponent(buttonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 86, Short.MAX_VALUE))
         );
         LoginLayout.setVerticalGroup(
             LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(pane_login, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(LoginLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(labelLogin)
+                .addGap(50, 50, 50)
+                .addComponent(panelFormLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buttonToRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(buttonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
         );
 
         tabbedPane.addTab("tab1", Login);
@@ -193,29 +219,9 @@ public class Login extends javax.swing.JFrame {
         Register.setBackground(new java.awt.Color(22, 25, 32));
         Register.setPreferredSize(new java.awt.Dimension(1280, 720));
 
-        pane_title1.setBackground(new java.awt.Color(0, 0, 0));
-        pane_title1.setPreferredSize(new java.awt.Dimension(640, 720));
-        pane_title1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel5.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("GAME STORE");
-        jLabel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
-        pane_title1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, 330, 50));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GAME STORE COVER.png"))); // NOI18N
-        jLabel3.setFocusable(false);
-        pane_title1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 620, 720));
-
-        pane_register.setBackground(new java.awt.Color(22, 25, 32));
-        pane_register.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        pane_register.setPreferredSize(new java.awt.Dimension(640, 720));
-        pane_register.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         labelRegister.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         labelRegister.setForeground(new java.awt.Color(255, 255, 255));
         labelRegister.setText("REGISTER");
-        pane_register.add(labelRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(225, 111, -1, -1));
 
         labelRegisterEmail.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         labelRegisterEmail.setForeground(new java.awt.Color(4, 175, 244));
@@ -254,14 +260,14 @@ public class Login extends javax.swing.JFrame {
         panelFormRegisterLayout.setHorizontalGroup(
             panelFormRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelFormRegisterLayout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addGap(40, 40, 40)
                 .addGroup(panelFormRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFormRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(panelFormRegisterLayout.createSequentialGroup()
                             .addComponent(labelGender)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
                             .addComponent(checkRegisterShowPassword))
-                        .addComponent(textRegisterPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                        .addComponent(textRegisterPassword, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(textRegisterEmail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(labelRegisterEmail, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(labelRegisterPassword, javax.swing.GroupLayout.Alignment.LEADING))
@@ -296,8 +302,6 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap(45, Short.MAX_VALUE))
         );
 
-        pane_register.add(panelFormRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(82, 201, -1, -1));
-
         buttonToLogin.setBackground(new java.awt.Color(22, 25, 32));
         buttonToLogin.setForeground(new java.awt.Color(103, 193, 245));
         buttonToLogin.setText("Already have an account?");
@@ -311,7 +315,6 @@ public class Login extends javax.swing.JFrame {
                 buttonToLoginActionPerformed(evt);
             }
         });
-        pane_register.add(buttonToLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(386, 550, -1, -1));
 
         buttonRegister.setText("REGISTER");
         buttonRegister.setBorderColor(new java.awt.Color(111, 166, 32));
@@ -321,41 +324,43 @@ public class Login extends javax.swing.JFrame {
                 buttonRegisterActionPerformed(evt);
             }
         });
-        pane_register.add(buttonRegister, new org.netbeans.lib.awtextra.AbsoluteConstraints(237, 587, 156, 51));
 
         javax.swing.GroupLayout RegisterLayout = new javax.swing.GroupLayout(Register);
         Register.setLayout(RegisterLayout);
         RegisterLayout.setHorizontalGroup(
             RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(RegisterLayout.createSequentialGroup()
-                .addComponent(pane_title1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pane_register, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 86, Short.MAX_VALUE)
+                .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(RegisterLayout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addComponent(labelRegister))
+                    .addComponent(panelFormRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(RegisterLayout.createSequentialGroup()
+                        .addGap(304, 304, 304)
+                        .addComponent(buttonToLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(RegisterLayout.createSequentialGroup()
+                        .addGap(155, 155, 155)
+                        .addComponent(buttonRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 86, Short.MAX_VALUE))
         );
         RegisterLayout.setVerticalGroup(
             RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pane_title1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pane_register, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(RegisterLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(labelRegister)
+                .addGap(50, 50, 50)
+                .addComponent(panelFormRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buttonToLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(buttonRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(100, 100, 100))
         );
 
         tabbedPane.addTab("tab2", Register);
 
-        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, -50, 1300, 720));
-
-        pane_title.setBackground(new java.awt.Color(0, 0, 0));
-        pane_title.setPreferredSize(new java.awt.Dimension(640, 720));
-        pane_title.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel4.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("GAME STORE");
-        jLabel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
-        pane_title.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, 330, 50));
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GAME STORE COVER.png"))); // NOI18N
-        pane_title.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, -1));
-
-        getContentPane().add(pane_title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        getContentPane().add(tabbedPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, -30, 660, 760));
 
         pack();
         setLocationRelativeTo(null);
@@ -369,40 +374,8 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_checkLoginShowPasswordActionPerformed
 
-    private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
-        try {
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection(database, user, pass);
-
-            String email = textLoginEmail.getText();
-            String password = textLoginPassword.getText();
-
-            Statement stt = conn.createStatement();
-            String SQL = "SELECT * FROM users WHERE email='" + email + "' AND name='" + password + "'";
-            ResultSet res = stt.executeQuery(SQL);
-            if (res.next()) {
-                Dashboard dashboard = new Dashboard();
-                dashboard.setVisible(true);
-                this.setVisible(false);
-            } else if (textLoginEmail.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Please fill out username");
-            } else if (textLoginPassword.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Please fill out password");
-            } else if (textLoginEmail.getText().contains("admin@gmail.com") && textLoginPassword.getText().contains("Admin")) {
-                Dashboard dashboard = new Dashboard();
-                dashboard.setVisible(true);
-                this.setVisible(false);
-            } else {
-                JOptionPane.showMessageDialog(null, "Wrong username or password!", "Message", JOptionPane.ERROR_MESSAGE);
-            }
-            conn.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }//GEN-LAST:event_buttonLoginActionPerformed
-
     private void buttonToRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonToRegisterActionPerformed
-        tabbedPane.setSelectedIndex(1);
+        tabbedPane.setSelectedComponent(Register);
     }//GEN-LAST:event_buttonToRegisterActionPerformed
 
     private void checkRegisterShowPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkRegisterShowPasswordActionPerformed
@@ -415,7 +388,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_checkRegisterShowPasswordActionPerformed
 
     private void buttonToLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonToLoginActionPerformed
-        tabbedPane.setSelectedIndex(0);
+        tabbedPane.setSelectedComponent(Login);
     }//GEN-LAST:event_buttonToLoginActionPerformed
 
     private void buttonRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRegisterActionPerformed
@@ -423,45 +396,70 @@ public class Login extends javax.swing.JFrame {
         try {
             Class.forName(driver);
             Connection conn = DriverManager.getConnection(database, user, pass);
-
-            String email = textRegisterEmail.getText();
-            String password = textRegisterPassword.getText();
-            String gender = "";
-
             Statement stt = conn.createStatement();
+
+            String gender = "";
             if (radioGenderMale.isSelected()) {
                 gender = "male";
-                System.out.println(gender);
             } else if (radioGenderFemale.isSelected()) {
                 gender = "female";
-                System.out.println(gender);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select your gender");
             }
-            String SQL = "INSERT INTO users (name, "
-                    + "email, gender) "
-                    + "VALUES "
-                    + "('" + password + "', "
-                    + "'" + email + "', "
-                    + "'" + gender + "')";
+            String SQL = "INSERT INTO users (name, email, gender) VALUES "
+                    + "("
+                    + "'" + textRegisterPassword.getText() + "', "
+                    + "'" + textRegisterEmail.getText() + "', "
+                    + "'" + gender + "'"
+                    + ")";
             stt.executeUpdate(SQL);
-            String SQL2 = "SELECT * FROM users WHERE name='" + password + "'";
-            ResultSet res = stt.executeQuery(SQL2);
 
+            String SQL2 = "SELECT * FROM users WHERE userID=(SELECT max(userID) FROM users)";
+            ResultSet res = stt.executeQuery(SQL2);
             if (res.next()) {
+                System.out.println(res.getString(1));
                 JOptionPane.showMessageDialog(null, "Data has been saved", "Saved", JOptionPane.INFORMATION_MESSAGE);
             } else if (textRegisterEmail.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Please fill out username");
             } else if (textRegisterPassword.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Please fill out password");
             }
-
-            conn.close();
             stt.close();
+            conn.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_buttonRegisterActionPerformed
+
+    private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
+        try {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(database, user, pass);
+
+            Statement stt = conn.createStatement();
+            String SQL = "SELECT * FROM users WHERE email='" + textLoginEmail.getText() + "' AND name='" + textLoginPassword.getText() + "'";
+            ResultSet res = stt.executeQuery(SQL);
+            if (res.next()) {
+                UserFrame userframe = new UserFrame(Integer.parseInt(res.getString(1)));
+                userframe.setVisible(true);
+                this.setVisible(false);
+            } else if (textLoginEmail.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Please fill out username");
+            } else if (textLoginPassword.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Please fill out password");
+            } else if (textLoginEmail.getText().contains("admin@gmail.com") && textLoginPassword.getText().contains("Admin")) {
+                AdminFrame adminframe = new AdminFrame();
+                adminframe.setVisible(true);
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Wrong username or password!", "Message", JOptionPane.ERROR_MESSAGE);
+            }
+            stt.close();
+            conn.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -501,27 +499,22 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Login;
     private javax.swing.JPanel Register;
+    private javax.swing.JPanel Title;
     private ButtonRound buttonLogin;
     private ButtonRound buttonRegister;
     private ButtonRound buttonToLogin;
     private ButtonRound buttonToRegister;
     private javax.swing.JCheckBox checkLoginShowPassword;
     private javax.swing.JCheckBox checkRegisterShowPassword;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel labeLoginlPassword;
     private javax.swing.JLabel labelGender;
+    private javax.swing.JLabel labelImage;
     private javax.swing.JLabel labelLogin;
     private javax.swing.JLabel labelLoginEmail;
     private javax.swing.JLabel labelRegister;
     private javax.swing.JLabel labelRegisterEmail;
     private javax.swing.JLabel labelRegisterPassword;
-    private javax.swing.JPanel pane_login;
-    private javax.swing.JPanel pane_register;
-    private javax.swing.JPanel pane_title;
-    private javax.swing.JPanel pane_title1;
+    private javax.swing.JLabel labelTitle;
     private PanelRound panelFormLogin;
     private PanelRound panelFormRegister;
     private javax.swing.JRadioButton radioGenderFemale;

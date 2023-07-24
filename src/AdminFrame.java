@@ -20,7 +20,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.TableColumn;
 
-public class Dashboard extends javax.swing.JFrame {
+public class AdminFrame extends javax.swing.JFrame {
 
     Connect dbsetting;
     String driver, database, user, pass;
@@ -29,7 +29,7 @@ public class Dashboard extends javax.swing.JFrame {
     /**
      * Creates new form Dashboard
      */
-    public Dashboard() {
+    public AdminFrame() {
         initComponents();
 
         dbsetting = new Connect();
@@ -411,7 +411,7 @@ public class Dashboard extends javax.swing.JFrame {
                         Class.forName(driver);
                         Connection conn = DriverManager.getConnection(database, user, pass);
                         Statement stt = conn.createStatement();
-                        String SQL = "INSERT INTO studios (studio_name, director, studio_country) VALUES"
+                        String SQL = "INSERT INTO studios (studio_name, director, studio_country) VALUES "
                                 + "("
                                 + "'" + textStudioName.getText() + "',"
                                 + "'" + textDirector.getText() + "',"
@@ -445,7 +445,7 @@ public class Dashboard extends javax.swing.JFrame {
                         Class.forName(driver);
                         Connection conn = DriverManager.getConnection(database, user, pass);
                         Statement stt = conn.createStatement();
-                        String SQL = "INSERT INTO publishers (publisher_name, publisher_country) VALUES"
+                        String SQL = "INSERT INTO publishers (publisher_name, publisher_country) VALUES "
                                 + "("
                                 + "'" + textPublisherName.getText() + "',"
                                 + "'" + textPublisherCountry.getText() + "'"
@@ -479,7 +479,7 @@ public class Dashboard extends javax.swing.JFrame {
                         Statement stt = conn.createStatement();
                         StudioItem si = (StudioItem) comboBoxStudio.getSelectedItem();
                         PublisherItem pi = (PublisherItem) comboBoxPublisher.getSelectedItem();
-                        String SQL = "INSERT INTO games (game_title, genre, studioID, publisherID, release_date, price) VALUES"
+                        String SQL = "INSERT INTO games (game_title, genre, studioID, publisherID, release_date, price) VALUES "
                                 + "("
                                 + "'" + textGameTitle.getText() + "',"
                                 + "'" + textGenre.getText() + "',"
@@ -2705,20 +2705,20 @@ public class Dashboard extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashboard().setVisible(true);
+                new AdminFrame().setVisible(true);
             }
         });
     }
