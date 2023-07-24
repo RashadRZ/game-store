@@ -413,8 +413,8 @@ public class AdminFrame extends javax.swing.JFrame {
                         Statement stt = conn.createStatement();
                         String SQL = "INSERT INTO studios (studio_name, director, studio_country) VALUES "
                                 + "("
-                                + "'" + textStudioName.getText() + "',"
-                                + "'" + textDirector.getText() + "',"
+                                + "'" + textStudioName.getText() + "', "
+                                + "'" + textDirector.getText() + "', "
                                 + "'" + textStudioCountry.getText() + "'"
                                 + ")";
                         stt.executeUpdate(SQL);
@@ -447,7 +447,7 @@ public class AdminFrame extends javax.swing.JFrame {
                         Statement stt = conn.createStatement();
                         String SQL = "INSERT INTO publishers (publisher_name, publisher_country) VALUES "
                                 + "("
-                                + "'" + textPublisherName.getText() + "',"
+                                + "'" + textPublisherName.getText() + "', "
                                 + "'" + textPublisherCountry.getText() + "'"
                                 + ")";
                         stt.executeUpdate(SQL);
@@ -481,11 +481,11 @@ public class AdminFrame extends javax.swing.JFrame {
                         PublisherItem pi = (PublisherItem) comboBoxPublisher.getSelectedItem();
                         String SQL = "INSERT INTO games (game_title, genre, studioID, publisherID, release_date, price) VALUES "
                                 + "("
-                                + "'" + textGameTitle.getText() + "',"
-                                + "'" + textGenre.getText() + "',"
+                                + "'" + textGameTitle.getText() + "', "
+                                + "'" + textGenre.getText() + "', "
                                 + si.studioID + ", "
                                 + pi.publisherID + ", "
-                                + "'" + textReleaseDate.getText() + "',"
+                                + "'" + textReleaseDate.getText() + "', "
                                 + Double.parseDouble(textPrice.getText())
                                 + ")";
                         stt.executeUpdate(SQL);
@@ -1243,16 +1243,17 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addComponent(labelStudios)
                 .addGap(50, 50, 50)
                 .addGroup(StudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buttonAddStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(StudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buttonAddStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonSearchStudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
                 .addComponent(scrollPaneStudios, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(StudiosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonDeleteStudios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonEditStudios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab1", Studios);

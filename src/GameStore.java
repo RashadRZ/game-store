@@ -13,11 +13,5 @@ public class GameStore {
     public static void main(String[] args) {
         Login login = new Login();
         login.setVisible(true);
-        
-//        Dashboard adminframe = new Dashboard();
-//        adminframe.setVisible(true);
-        
-//        UserFrame userframe = new UserFrame();
-//        userframe.setVisible(true);
     }
 }
