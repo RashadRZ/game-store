@@ -1,15 +1,3 @@
-
-import java.awt.Color;
-import java.awt.Font;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.table.TableColumn;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -20,6 +8,18 @@ import javax.swing.table.TableColumn;
  *
  * @author lenovo
  */
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.table.TableColumn;
+
 public class Dashboard extends javax.swing.JFrame {
 
     Connect dbsetting;
@@ -125,6 +125,7 @@ public class Dashboard extends javax.swing.JFrame {
         return null;
     }
 
+    // UI
     public void tableHeaderSetColor() {
         tableStudios.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
         tableStudios.getTableHeader().setBackground(new Color(40, 46, 57));
@@ -298,7 +299,7 @@ public class Dashboard extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-    
+
     private void search(int table) {
         try {
             String data[];
