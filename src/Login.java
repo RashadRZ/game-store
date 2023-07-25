@@ -95,7 +95,7 @@ public class Login extends javax.swing.JFrame {
         labelTitle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 3, true));
         Title.add(labelTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, 330, 50));
 
-        labelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GAME STORE COVER.png"))); // NOI18N
+        labelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/GAME STORE COVER.png"))); // NOI18N
         Title.add(labelImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 720));
 
         getContentPane().add(Title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));

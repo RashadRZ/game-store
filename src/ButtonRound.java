@@ -122,7 +122,7 @@ public class ButtonRound extends JButton {
     }
 
     public void setSearchIcon() {
-        ImageIcon icon = new ImageIcon("lib/search-icon.png");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/search-icon.png"));
         Image img = icon.getImage();
         Image imgScale = img.getScaledInstance(this.getWidth() - 8, this.getHeight() - 8, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
@@ -130,7 +130,7 @@ public class ButtonRound extends JButton {
     }
 
     public void setEditIcon() {
-        ImageIcon icon = new ImageIcon("lib/edit-icon.png");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/edit-icon.png"));
         Image img = icon.getImage();
         Image imgScale = img.getScaledInstance(this.getWidth() - 80, this.getHeight() - 8, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);
@@ -138,7 +138,7 @@ public class ButtonRound extends JButton {
     }
 
     public void setDeleteIcon() {
-        ImageIcon icon = new ImageIcon("lib/delete-icon.png");
+        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/delete-icon.png"));
         Image img = icon.getImage();
         Image imgScale = img.getScaledInstance(this.getWidth() - 80, this.getHeight() - 8, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(imgScale);

@@ -74,7 +74,7 @@
         <Component class="javax.swing.JLabel" name="labelImage">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/GAME STORE COVER.png"/>
+              <Image iconType="3" name="/icons/GAME STORE COVER.png"/>
             </Property>
           </Properties>
           <Constraints>
