@@ -1,11 +1,14 @@
+package swing;
+
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 /**
  *
- * @author lenovo
+ * @author LENOVO
  */
 import java.awt.Color;
 import java.awt.Font;
@@ -13,13 +16,17 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.JTextField;
+import javax.swing.BorderFactory;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
-public class TextFieldRound extends JTextField {
+public class PasswordFieldRound extends JPasswordField {
 
     public int getRoundTopLeft() {
         return roundTopLeft;
@@ -62,7 +69,7 @@ public class TextFieldRound extends JTextField {
     private int roundBottomLeft = 15;
     private int roundBottomRight = 15;
 
-    public TextFieldRound() {
+    public PasswordFieldRound() {
         setFont(new Font("Arial", Font.PLAIN, 14));
         setBorder(new EmptyBorder(6, 10, 6, 10));
         setOpaque(false);

@@ -1,3 +1,5 @@
+package swing;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -7,6 +9,7 @@
  *
  * @author lenovo
  */
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,10 +18,10 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.JComboBox;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class ComboBoxRound extends JComboBox {
+public class TextFieldRound extends JTextField {
 
     public int getRoundTopLeft() {
         return roundTopLeft;
@@ -61,10 +64,11 @@ public class ComboBoxRound extends JComboBox {
     private int roundBottomLeft = 15;
     private int roundBottomRight = 15;
 
-    public ComboBoxRound() {
+    public TextFieldRound() {
         setFont(new Font("Arial", Font.PLAIN, 14));
         setBorder(new EmptyBorder(6, 10, 6, 10));
         setOpaque(false);
+        setCaretColor(new Color(0, 0, 0));
     }
 
     @Override
