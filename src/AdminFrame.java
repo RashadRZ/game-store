@@ -14,9 +14,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.TableColumn;
 
@@ -25,6 +31,7 @@ public class AdminFrame extends javax.swing.JFrame {
     Connect dbsetting;
     String driver, database, user, pass;
     Object table;
+    private String filename;
 
     /**
      * Creates new form Dashboard
@@ -69,8 +76,8 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.table.DefaultTableModel tableModelUsers = getDefaultTableModel(4);
     private javax.swing.table.DefaultTableModel tableModelTransactions = getDefaultTableModel(5);
 
-    private javax.swing.table.DefaultTableModel getDefaultTableModel(int i) {
-        switch (i) {
+    private javax.swing.table.DefaultTableModel getDefaultTableModel(int table) {
+        switch (table) {
             case 1:
                 return new javax.swing.table.DefaultTableModel(new Object[][]{}, new String[]{"Studio ID", "Studio Name", "Director", "Studio Country"}) {
                     boolean[] canEdit = new boolean[]{
@@ -956,6 +963,10 @@ public class AdminFrame extends javax.swing.JFrame {
         buttonReleaseDate = new ButtonRound();
         labelPrice = new javax.swing.JLabel();
         textPrice = new TextFieldRound();
+        labelGameImage = new javax.swing.JLabel();
+        textGameImage = new TextFieldRound();
+        buttonOpenImage = new ButtonRound();
+        buttonSaveImage = new ButtonRound();
         buttonSubmitCreateGames = new ButtonRound();
         buttonResetCreateGames = new ButtonRound();
         EditStudios = new javax.swing.JPanel();
@@ -996,6 +1007,10 @@ public class AdminFrame extends javax.swing.JFrame {
         buttonEditReleaseDate = new ButtonRound();
         labelEditPrice = new javax.swing.JLabel();
         textEditPrice = new TextFieldRound();
+        labelEditGameImage = new javax.swing.JLabel();
+        textEditGameImage = new TextFieldRound();
+        buttonEditOpenImage = new ButtonRound();
+        buttonEditSaveImage = new ButtonRound();
         buttonUpdateEditGames = new ButtonRound();
         buttonResetEditGames = new ButtonRound();
         textEditGameID = new TextFieldRound();
@@ -2033,6 +2048,41 @@ public class AdminFrame extends javax.swing.JFrame {
 
         textPrice.setPreferredSize(new java.awt.Dimension(300, 30));
 
+        labelGameImage.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelGameImage.setForeground(new java.awt.Color(4, 175, 244));
+        labelGameImage.setText("Image");
+
+        textGameImage.setEditable(false);
+        textGameImage.setBackground(new java.awt.Color(255, 255, 255));
+
+        buttonOpenImage.setBackground(new java.awt.Color(103, 193, 245));
+        buttonOpenImage.setText("...");
+        buttonOpenImage.setAlignmentY(0.0F);
+        buttonOpenImage.setBorderColor(new java.awt.Color(103, 193, 245));
+        buttonOpenImage.setColor(new java.awt.Color(103, 193, 245));
+        buttonOpenImage.setColorClick(new java.awt.Color(63, 153, 205));
+        buttonOpenImage.setColorOver(new java.awt.Color(143, 233, 245));
+        buttonOpenImage.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonOpenImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonOpenImageMouseClicked(evt);
+            }
+        });
+
+        buttonSaveImage.setBackground(new java.awt.Color(103, 193, 245));
+        buttonSaveImage.setText("SAVE");
+        buttonSaveImage.setAlignmentY(0.0F);
+        buttonSaveImage.setBorderColor(new java.awt.Color(103, 193, 245));
+        buttonSaveImage.setColor(new java.awt.Color(103, 193, 245));
+        buttonSaveImage.setColorClick(new java.awt.Color(63, 153, 205));
+        buttonSaveImage.setColorOver(new java.awt.Color(143, 233, 245));
+        buttonSaveImage.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonSaveImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonSaveImageMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelCreateGamesLayout = new javax.swing.GroupLayout(panelCreateGames);
         panelCreateGames.setLayout(panelCreateGamesLayout);
         panelCreateGamesLayout.setHorizontalGroup(
@@ -2040,18 +2090,6 @@ public class AdminFrame extends javax.swing.JFrame {
             .addGroup(panelCreateGamesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCreateGamesLayout.createSequentialGroup()
-                        .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelGenre))
-                        .addGap(82, 82, 82)
-                        .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelReleaseDate)
-                            .addComponent(textReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(152, 152, 152)
-                        .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelPrice)
-                            .addComponent(textPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelCreateGamesLayout.createSequentialGroup()
                         .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(buttonReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2066,7 +2104,25 @@ public class AdminFrame extends javax.swing.JFrame {
                         .addGap(82, 82, 82)
                         .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelPublisher)
-                            .addComponent(comboBoxPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(comboBoxPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(labelGameImage)
+                    .addGroup(panelCreateGamesLayout.createSequentialGroup()
+                        .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(panelCreateGamesLayout.createSequentialGroup()
+                                .addComponent(buttonSaveImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonOpenImage, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textGenre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelGenre, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textGameImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(82, 82, 82)
+                        .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelReleaseDate)
+                            .addComponent(textReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(152, 152, 152)
+                        .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelPrice)
+                            .addComponent(textPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         panelCreateGamesLayout.setVerticalGroup(
@@ -2095,7 +2151,15 @@ public class AdminFrame extends javax.swing.JFrame {
                         .addComponent(textPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(textReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(buttonReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(labelGameImage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textGameImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelCreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonSaveImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonOpenImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         buttonSubmitCreateGames.setText("SUBMIT");
@@ -2149,7 +2213,7 @@ public class AdminFrame extends javax.swing.JFrame {
                 .addGroup(CreateGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonSubmitCreateGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonResetCreateGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab8", CreateGames);
@@ -2440,6 +2504,40 @@ public class AdminFrame extends javax.swing.JFrame {
 
         textEditPrice.setPreferredSize(new java.awt.Dimension(300, 30));
 
+        labelEditGameImage.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        labelEditGameImage.setForeground(new java.awt.Color(4, 175, 244));
+        labelEditGameImage.setText("Image");
+
+        textEditGameImage.setPreferredSize(new java.awt.Dimension(300, 30));
+
+        buttonEditOpenImage.setBackground(new java.awt.Color(103, 193, 245));
+        buttonEditOpenImage.setText("...");
+        buttonEditOpenImage.setAlignmentY(0.0F);
+        buttonEditOpenImage.setBorderColor(new java.awt.Color(103, 193, 245));
+        buttonEditOpenImage.setColor(new java.awt.Color(103, 193, 245));
+        buttonEditOpenImage.setColorClick(new java.awt.Color(63, 153, 205));
+        buttonEditOpenImage.setColorOver(new java.awt.Color(143, 233, 245));
+        buttonEditOpenImage.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonEditOpenImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonEditOpenImageMouseClicked(evt);
+            }
+        });
+
+        buttonEditSaveImage.setBackground(new java.awt.Color(103, 193, 245));
+        buttonEditSaveImage.setText("SAVE");
+        buttonEditSaveImage.setAlignmentY(0.0F);
+        buttonEditSaveImage.setBorderColor(new java.awt.Color(103, 193, 245));
+        buttonEditSaveImage.setColor(new java.awt.Color(103, 193, 245));
+        buttonEditSaveImage.setColorClick(new java.awt.Color(63, 153, 205));
+        buttonEditSaveImage.setColorOver(new java.awt.Color(143, 233, 245));
+        buttonEditSaveImage.setPreferredSize(new java.awt.Dimension(100, 30));
+        buttonEditSaveImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonEditSaveImageMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelEditGamesLayout = new javax.swing.GroupLayout(panelEditGames);
         panelEditGames.setLayout(panelEditGamesLayout);
         panelEditGamesLayout.setHorizontalGroup(
@@ -2447,18 +2545,6 @@ public class AdminFrame extends javax.swing.JFrame {
             .addGroup(panelEditGamesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelEditGamesLayout.createSequentialGroup()
-                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textEditGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelEditGenre))
-                        .addGap(82, 82, 82)
-                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelEditReleaseDate)
-                            .addComponent(textEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(152, 152, 152)
-                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelEditPrice)
-                            .addComponent(textEditPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelEditGamesLayout.createSequentialGroup()
                         .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(buttonEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2473,7 +2559,25 @@ public class AdminFrame extends javax.swing.JFrame {
                         .addGap(82, 82, 82)
                         .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelEditPublisher)
-                            .addComponent(comboBoxEditPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(comboBoxEditPublisher, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(labelEditGameImage)
+                    .addGroup(panelEditGamesLayout.createSequentialGroup()
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(textEditGameImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelEditGamesLayout.createSequentialGroup()
+                                .addComponent(buttonEditSaveImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonEditOpenImage, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textEditGenre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelEditGenre, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(82, 82, 82)
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelEditReleaseDate)
+                            .addComponent(textEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(152, 152, 152)
+                        .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelEditPrice)
+                            .addComponent(textEditPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         panelEditGamesLayout.setVerticalGroup(
@@ -2502,7 +2606,15 @@ public class AdminFrame extends javax.swing.JFrame {
                         .addComponent(textEditPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(textEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(buttonEditReleaseDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(labelEditGameImage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textEditGameImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelEditGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonEditSaveImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonEditOpenImage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         buttonUpdateEditGames.setBackground(new java.awt.Color(0, 96, 213));
@@ -2564,7 +2676,7 @@ public class AdminFrame extends javax.swing.JFrame {
                     .addComponent(buttonResetEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonUpdateEditGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(textEditGameID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(229, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("tab8", EditGames);
@@ -2760,6 +2872,78 @@ public class AdminFrame extends javax.swing.JFrame {
         textSearchTransactions.setText("");
     }//GEN-LAST:event_textSearchTransactionsMouseClicked
 
+    private void buttonOpenImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonOpenImageMouseClicked
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter1 = new FileNameExtensionFilter(".jpg", "jpg");
+            fileChooser.setFileFilter(filter1);
+            fileChooser.showOpenDialog(null);
+            File f = fileChooser.getSelectedFile();
+            this.filename = f.getPath();
+            textGameImage.setText(filename);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonOpenImageMouseClicked
+
+    private void buttonSaveImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonSaveImageMouseClicked
+        try {
+            String newPath = "src/images";
+            File directory = new File(newPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            File sourceFile = null;
+            File destinationFile = null;
+            String ext = this.filename.substring(filename.lastIndexOf('.') + 1);
+            sourceFile = new File(filename);
+            destinationFile = new File(newPath + "/" + textGameTitle.getText() + "." + ext);
+            System.out.println(destinationFile);
+            Files.copy(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            JOptionPane.showMessageDialog(null, "Image Saved");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonSaveImageMouseClicked
+
+    private void buttonEditOpenImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditOpenImageMouseClicked
+        try {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter1 = new FileNameExtensionFilter("Image Files", "jpg");
+            FileNameExtensionFilter filter2 = new FileNameExtensionFilter("Image Files", "jpeg");
+            FileNameExtensionFilter filter3 = new FileNameExtensionFilter("Image Files", "png");
+            fileChooser.setFileFilter(filter1);
+            fileChooser.setFileFilter(filter2);
+            fileChooser.setFileFilter(filter3);
+            fileChooser.showOpenDialog(null);
+            File f = fileChooser.getSelectedFile();
+            this.filename = f.getPath();
+            textEditGameImage.setText(filename);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonEditOpenImageMouseClicked
+
+    private void buttonEditSaveImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEditSaveImageMouseClicked
+        try {
+            String newPath = "src/images";
+            File directory = new File(newPath);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+            File sourceFile = null;
+            File destinationFile = null;
+            String ext = this.filename.substring(filename.lastIndexOf('.') + 1);
+            sourceFile = new File(filename);
+            destinationFile = new File(newPath + "/" + textEditGameTitle.getText() + "." + ext);
+            System.out.println(destinationFile);
+            Files.copy(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            JOptionPane.showMessageDialog(null, "Image Saved");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonEditSaveImageMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -2818,10 +3002,13 @@ public class AdminFrame extends javax.swing.JFrame {
     private ButtonRound buttonDeleteTransactions;
     private ButtonRound buttonDeleteUsers;
     private ButtonRound buttonEditGames;
+    private ButtonRound buttonEditOpenImage;
     private ButtonRound buttonEditPublishers;
     private ButtonRound buttonEditReleaseDate;
+    private ButtonRound buttonEditSaveImage;
     private ButtonRound buttonEditStudios;
     private ButtonRound buttonGames;
+    private ButtonRound buttonOpenImage;
     private ButtonRound buttonPublishers;
     private ButtonRound buttonReleaseDate;
     private ButtonRound buttonReset;
@@ -2831,6 +3018,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private ButtonRound buttonResetEdiStudios;
     private ButtonRound buttonResetEditGames;
     private ButtonRound buttonResetEditPublishers;
+    private ButtonRound buttonSaveImage;
     private ButtonRound buttonSearchGames;
     private ButtonRound buttonSearchPublishers;
     private ButtonRound buttonSearchStudios;
@@ -2858,6 +3046,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labelCreateStudios;
     private javax.swing.JLabel labelDirector;
     private javax.swing.JLabel labelEditDirector;
+    private javax.swing.JLabel labelEditGameImage;
     private javax.swing.JLabel labelEditGameTitle;
     private javax.swing.JLabel labelEditGames;
     private javax.swing.JLabel labelEditGenre;
@@ -2871,6 +3060,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private javax.swing.JLabel labelEditStudioCountry;
     private javax.swing.JLabel labelEditStudioName;
     private javax.swing.JLabel labelEditStudios;
+    private javax.swing.JLabel labelGameImage;
     private javax.swing.JLabel labelGameTitle;
     private javax.swing.JLabel labelGames;
     private javax.swing.JLabel labelGenre;
@@ -2907,6 +3097,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private TextFieldRound textDirector;
     private TextFieldRound textEditDirector;
     private TextFieldRound textEditGameID;
+    private TextFieldRound textEditGameImage;
     private TextFieldRound textEditGameTitle;
     private TextFieldRound textEditGenre;
     private TextFieldRound textEditPrice;
@@ -2918,6 +3109,7 @@ public class AdminFrame extends javax.swing.JFrame {
     private TextFieldRound textEditStudioID;
     private TextFieldRound textEditStudioName;
     private TextFieldRound textField;
+    private TextFieldRound textGameImage;
     private TextFieldRound textGameTitle;
     private TextFieldRound textGenre;
     private TextFieldRound textPrice;

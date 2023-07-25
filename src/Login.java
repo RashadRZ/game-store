@@ -35,11 +35,12 @@ public class Login extends javax.swing.JFrame {
         user = dbsetting.SettingPanel("DBUsername");
         pass = dbsetting.SettingPanel("DBPassword");
         
+        textLoginEmail.requestFocus();
+        
         UIManager UI = new UIManager();
         UI.put("Panel.background", new ColorUIResource(40, 46, 57));
         UI.put("OptionPane.background", new ColorUIResource(40, 46, 57));
         UI.put("OptionPane.messageForeground", Color.white);
-        textLoginEmail.requestFocus();
     }
 
     /**
@@ -187,7 +188,7 @@ public class Login extends javax.swing.JFrame {
         LoginLayout.setHorizontalGroup(
             LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(LoginLayout.createSequentialGroup()
-                .addGap(0, 86, Short.MAX_VALUE)
+                .addGap(86, 86, 86)
                 .addGroup(LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(LoginLayout.createSequentialGroup()
                         .addGap(175, 175, 175)
@@ -199,7 +200,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(LoginLayout.createSequentialGroup()
                         .addGap(155, 155, 155)
                         .addComponent(buttonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 86, Short.MAX_VALUE))
+                .addGap(86, 86, 86))
         );
         LoginLayout.setVerticalGroup(
             LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,7 +332,7 @@ public class Login extends javax.swing.JFrame {
         RegisterLayout.setHorizontalGroup(
             RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(RegisterLayout.createSequentialGroup()
-                .addGap(0, 86, Short.MAX_VALUE)
+                .addGap(86, 86, 86)
                 .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(RegisterLayout.createSequentialGroup()
                         .addGap(143, 143, 143)
@@ -343,7 +344,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(RegisterLayout.createSequentialGroup()
                         .addGap(155, 155, 155)
                         .addComponent(buttonRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 86, Short.MAX_VALUE))
+                .addGap(86, 86, 86))
         );
         RegisterLayout.setVerticalGroup(
             RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -426,6 +427,7 @@ public class Login extends javax.swing.JFrame {
             } else if (textRegisterPassword.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Please fill out password");
             }
+            res.close();
             stt.close();
             conn.close();
         } catch (Exception e) {
@@ -456,6 +458,7 @@ public class Login extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Wrong username or password!", "Message", JOptionPane.ERROR_MESSAGE);
             }
+            res.close();
             stt.close();
             conn.close();
         } catch (Exception e) {

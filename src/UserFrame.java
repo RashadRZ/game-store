@@ -50,7 +50,6 @@ public class UserFrame extends javax.swing.JFrame {
         this.userID = userID;
 
         buttonMyGames.setBold();
-
         buttonsSearchSetIcon();
         setUserName();
         loadMyGames();
@@ -77,6 +76,7 @@ public class UserFrame extends javax.swing.JFrame {
             while (res.next()) {
                 labelUserName.setText(res.getString(1));
             }
+            res.close();
             stt.close();
             conn.close();
         } catch (Exception e) {
@@ -152,6 +152,9 @@ public class UserFrame extends javax.swing.JFrame {
 
                 columnPanel.add(rowPanel);
             }
+            res.close();
+            stt.close();
+            conn.close();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -226,6 +229,9 @@ public class UserFrame extends javax.swing.JFrame {
 
                 columnPanel.add(rowPanel);
             }
+            res.close();
+            stt.close();
+            conn.close();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -252,120 +258,6 @@ public class UserFrame extends javax.swing.JFrame {
             String SQL = "SELECT gameID, game_title, studio_name, publisher_name, release_date, genre, price FROM games LEFT JOIN studios ON games.studioID=studios.studioID LEFT JOIN publishers ON games.publisherID=publishers.publisherID WHERE game_title LIKE '%"
                     + textSearchStore.getText() + "%' OR genre LIKE '%" + textSearchStore.getText() + "%' OR studio_name LIKE '%" + textSearchStore.getText() + "%' OR publisher_name LIKE '%" + textSearchStore.getText() + "%' OR release_date LIKE '%"
                     + textSearchStore.getText() + "%' OR price LIKE '%" + textSearchStore.getText() + "%'";
-            ResultSet res = stt.executeQuery(SQL);
-            while (res.next()) {
-                String gameID = res.getString(1);
-                String game_title =  res.getString(2);
-                
-                JPanel rowPanel = new JPanel();
-                rowPanel.setPreferredSize(new Dimension(400, 200));
-                rowPanel.setLayout(null);
-                rowPanel.setBackground(new Color(61, 76, 93));
-
-                ImageIcon icon = new ImageIcon("src/images/" + res.getString(1) + ".jpg");
-                PictureBox image = new PictureBox();
-                image.setBounds(0, 0, 400, 200);
-                image.setImage(icon);
-                rowPanel.add(image);
-
-                JLabel title = new JLabel(res.getString(2));
-                title.setBounds(420, 10, 500, 30);
-                title.setFont(new Font("Arial", Font.BOLD, 24));
-                title.setForeground(Color.WHITE);
-                rowPanel.add(title);
-
-                JLabel studio = new JLabel("Studio: " + res.getString(3));
-                studio.setBounds(420, 40, 500, 30);
-                studio.setFont(new Font("Arial", Font.PLAIN, 18));
-                studio.setForeground(new Color(103, 193, 245));
-                rowPanel.add(studio);
-
-                JLabel publisher = new JLabel("Publisher: " + res.getString(4));
-                publisher.setBounds(420, 60, 500, 30);
-                publisher.setFont(new Font("Arial", Font.PLAIN, 18));
-                publisher.setForeground(new Color(103, 193, 245));
-                rowPanel.add(publisher);
-
-                JLabel date = new JLabel("Release Date: " + res.getString(5));
-                date.setBounds(420, 100, 500, 30);
-                date.setFont(new Font("Arial", Font.PLAIN, 18));
-                date.setForeground(Color.GRAY);
-                rowPanel.add(date);
-
-                ButtonRound genre = new ButtonRound();
-                genre.setText(res.getString(6));
-                genre.setBounds(420, 160, 100, 30);
-                genre.setFont(new Font("Arial", Font.PLAIN, 18));
-                genre.setForeground(new Color(103, 193, 245));
-                genre.setColor(new Color(39, 59, 75));
-                genre.setBorderColor(new Color(39, 59, 75));
-                genre.setColorOver(new Color(40, 46, 57));
-                genre.setColorClick(new Color(40, 46, 57));
-                rowPanel.add(genre);
-
-                TextFieldRound price = new TextFieldRound();
-                price.setText("$" + res.getString(7));
-                price.setBounds(850, 100, 80, 30);
-                price.setFont(new Font("Arial", Font.PLAIN, 18));
-                price.setForeground(Color.WHITE);
-                price.setBackground(Color.BLACK);
-                price.setHorizontalAlignment(SwingConstants.RIGHT);
-                price.setRoundTopLeft(0);
-                price.setRoundTopRight(0);
-                price.setRoundBottomLeft(0);
-                price.setRoundBottomRight(0);
-                rowPanel.add(price);
-
-                ButtonRound buy = new ButtonRound();
-                buy.setText("BUY");
-                buy.setBounds(930, 100, 100, 30);
-                buy.setFont(new Font("Arial", Font.PLAIN, 18));
-                buy.setForeground(Color.WHITE);
-                buy.setBorderColor(new Color(111, 166, 32));
-                buy.setRadius(0);
-                rowPanel.add(buy);
-                buy.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        if (e.getSource() == buy) {
-                            int result = JOptionPane.showConfirmDialog(null, "Do You Want To Buy This Game? \n" + game_title, "Buy Confirmation", JOptionPane.YES_NO_OPTION);
-                            switch (result) {
-                                case JOptionPane.YES_OPTION:
-                                    insertTransaction(gameID);
-                                    break;
-                                case JOptionPane.NO_OPTION:
-                                    break;
-                            }
-                        }
-                    }
-                });
-
-                columnPanel.add(rowPanel);
-            }
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-            System.exit(0);
-        }
-    }
-
-    public void loadStore() {
-        scrollPaneStore.getVerticalScrollBar().setUnitIncrement(16);
-
-        JPanel storePanel = new JPanel();
-        scrollPaneStore.setViewportView(storePanel);
-        storePanel.setLayout(new BorderLayout(0, 0));
-
-        JPanel columnPanel = new JPanel();
-        storePanel.add(columnPanel, BorderLayout.NORTH);
-        columnPanel.setLayout(new GridLayout(0, 1, 0, 1));
-        columnPanel.setBackground(Color.gray);
-
-        try {
-            Class.forName(driver);
-            Connection conn = DriverManager.getConnection(database, user, pass);
-            Statement stt = conn.createStatement();
-            String SQL = "SELECT gameID, game_title, studio_name, publisher_name, release_date, genre, price FROM games LEFT JOIN studios ON games.studioID=studios.studioID LEFT JOIN publishers ON games.publisherID=publishers.publisherID ORDER BY game_title";
             ResultSet res = stt.executeQuery(SQL);
             while (res.next()) {
                 String gameID = res.getString(1);
@@ -453,9 +345,146 @@ public class UserFrame extends javax.swing.JFrame {
                         }
                     }
                 });
-
                 columnPanel.add(rowPanel);
             }
+            res.close();
+            stt.close();
+            conn.close();
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        }
+    }
+
+    public void loadStore() {
+        scrollPaneStore.getVerticalScrollBar().setUnitIncrement(16);
+
+        JPanel storePanel = new JPanel();
+        scrollPaneStore.setViewportView(storePanel);
+        storePanel.setLayout(new BorderLayout(0, 0));
+
+        JPanel columnPanel = new JPanel();
+        storePanel.add(columnPanel, BorderLayout.NORTH);
+        columnPanel.setLayout(new GridLayout(0, 1, 0, 1));
+        columnPanel.setBackground(Color.gray);
+
+        try {
+            Class.forName(driver);
+            Connection conn = DriverManager.getConnection(database, user, pass);
+            Statement stt = conn.createStatement();
+            String SQL = "SELECT gameID, game_title, studio_name, publisher_name, release_date, genre, price FROM games LEFT JOIN studios ON games.studioID=studios.studioID LEFT JOIN publishers ON games.publisherID=publishers.publisherID ORDER BY game_title";
+            ResultSet res = stt.executeQuery(SQL);
+            while (res.next()) {
+                String gameID = res.getString(1);
+                String game_title = res.getString(2);
+
+                JPanel rowPanel = new JPanel();
+                rowPanel.setPreferredSize(new Dimension(400, 200));
+                rowPanel.setLayout(null);
+                rowPanel.setBackground(new Color(61, 76, 93));
+
+                ImageIcon icon = new ImageIcon("src/images/" + res.getString(1) + ".jpg");
+                PictureBox image = new PictureBox();
+                image.setBounds(0, 0, 400, 200);
+                image.setImage(icon);
+                rowPanel.add(image);
+
+                JLabel title = new JLabel(res.getString(2));
+                title.setBounds(420, 10, 500, 30);
+                title.setFont(new Font("Arial", Font.BOLD, 24));
+                title.setForeground(Color.WHITE);
+                rowPanel.add(title);
+
+                JLabel studio = new JLabel("Studio: " + res.getString(3));
+                studio.setBounds(420, 40, 500, 30);
+                studio.setFont(new Font("Arial", Font.PLAIN, 18));
+                studio.setForeground(new Color(103, 193, 245));
+                rowPanel.add(studio);
+
+                JLabel publisher = new JLabel("Publisher: " + res.getString(4));
+                publisher.setBounds(420, 60, 500, 30);
+                publisher.setFont(new Font("Arial", Font.PLAIN, 18));
+                publisher.setForeground(new Color(103, 193, 245));
+                rowPanel.add(publisher);
+
+                JLabel date = new JLabel("Release Date: " + res.getString(5));
+                date.setBounds(420, 100, 500, 30);
+                date.setFont(new Font("Arial", Font.PLAIN, 18));
+                date.setForeground(Color.GRAY);
+                rowPanel.add(date);
+
+                ButtonRound genre = new ButtonRound();
+                genre.setText(res.getString(6));
+                genre.setBounds(420, 160, 100, 30);
+                genre.setFont(new Font("Arial", Font.PLAIN, 18));
+                genre.setForeground(new Color(103, 193, 245));
+                genre.setColor(new Color(39, 59, 75));
+                genre.setBorderColor(new Color(39, 59, 75));
+                genre.setColorOver(new Color(40, 46, 57));
+                genre.setColorClick(new Color(40, 46, 57));
+                rowPanel.add(genre);
+
+                Statement stt2 = conn.createStatement();
+                String SQL2 = "SELECT * FROM transactions WHERE userID=" + this.userID + " AND gameID=" + gameID;
+                ResultSet res2 = stt2.executeQuery(SQL2);
+
+                if (!res2.isBeforeFirst()) {
+                    TextFieldRound price = new TextFieldRound();
+                    price.setText("$" + res.getString(7));
+                    price.setBounds(850, 100, 80, 30);
+                    price.setFont(new Font("Arial", Font.PLAIN, 18));
+                    price.setForeground(Color.WHITE);
+                    price.setBackground(Color.BLACK);
+                    price.setHorizontalAlignment(SwingConstants.RIGHT);
+                    price.setRoundTopLeft(0);
+                    price.setRoundTopRight(0);
+                    price.setRoundBottomLeft(0);
+                    price.setRoundBottomRight(0);
+                    rowPanel.add(price);
+
+                    ButtonRound buy = new ButtonRound();
+                    buy.setText("BUY");
+                    buy.setBounds(930, 100, 100, 30);
+                    buy.setFont(new Font("Arial", Font.PLAIN, 18));
+                    buy.setForeground(Color.WHITE);
+                    buy.setBorderColor(new Color(111, 166, 32));
+                    buy.setRadius(0);
+                    rowPanel.add(buy);
+                    buy.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if (e.getSource() == buy) {
+                                int result = JOptionPane.showConfirmDialog(null, "Do You Want To Buy This Game? \n" + game_title, "Buy Confirmation", JOptionPane.YES_NO_OPTION);
+                                switch (result) {
+                                    case JOptionPane.YES_OPTION:
+                                        insertTransaction(gameID);
+                                        break;
+                                    case JOptionPane.NO_OPTION:
+                                        break;
+                                }
+                            }
+                        }
+                    });
+                    res2.close();
+                    stt2.close();
+                } else {
+                    JLabel own = new JLabel();
+                    own.setText("OWNED");
+                    own.setBounds(930, 100, 100, 30);
+                    own.setFont(new Font("Arial", Font.PLAIN, 18));
+                    own.setForeground(Color.WHITE);
+                    own.setBackground(Color.BLACK);
+                    own.setEnabled(false);
+                    rowPanel.add(own);
+                    res2.close();
+                    stt2.close();
+                }
+                columnPanel.add(rowPanel);
+            }
+            res.close();
+            stt.close();
+            conn.close();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
@@ -617,16 +646,17 @@ public class UserFrame extends javax.swing.JFrame {
         MyGamesLayout.setHorizontalGroup(
             MyGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MyGamesLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
                 .addGroup(MyGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelMyGames)
-                    .addComponent(scrollPaneMyGames, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(100, 100, 100))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MyGamesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(textSearchMyGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(buttonSearchMyGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(MyGamesLayout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addGroup(MyGamesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelMyGames)
+                            .addComponent(scrollPaneMyGames, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MyGamesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(textSearchMyGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonSearchMyGames, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(100, 100, 100))
         );
         MyGamesLayout.setVerticalGroup(
